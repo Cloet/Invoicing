@@ -45,7 +45,7 @@ const countryRoutes: Routes = [
     AddCountryComponent,
     DeleteCountryDialogComponent,
     EditCountryComponent,
-    CountryDisplayScreenComponent
+    CountryDisplayScreenComponent,
   ],
   imports: [
     CommonModule,
