@@ -3,7 +3,7 @@ import { CountryViewComponent } from './country-view.component';
 
 describe('CountryViewComponent', () => {
   let component: CountryViewComponent;
-  let fixture: ComponentFixture<VCountryViewComponent>;
+  let fixture: ComponentFixture<CountryViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

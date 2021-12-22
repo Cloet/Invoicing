@@ -55,7 +55,7 @@ export class AddCountryComponent implements OnInit {
       this._countryService.createCountry$(this.country).subscribe(response => {
         if (response.id != null && response.id > 0) {
           this.router.navigate(
-            ['/general/country']
+            ['/country']
           );
         }
       });

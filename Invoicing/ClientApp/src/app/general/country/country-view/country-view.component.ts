@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Country } from '../../common/model/country.model';
-import { CountryService } from '../../common/service/country.service';
+import { Country } from '../../../common/model/country.model';
+import { CountryService } from '../../../common/service/country.service';
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DeleteCountryDialogComponent } from './delete-country-dialog/delete-country-dialog.component';
-import { IError } from '../../common/model/errors.model';
-import { ErrorDialogComponent } from '../../error-dialog/error-dialog.component';
+import { IError } from '../../../common/model/errors.model';
+import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
 import { Router } from '@angular/router';
+import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-country-dialog.component';
 
 @Component({
   selector: 'app-country-view',
@@ -79,7 +79,7 @@ export class CountryViewComponent implements OnInit {
   }
 
   onNavigateRow(row: any) {
-    this._router.navigate(['/general/edit-country/' + row.id]);
+    this._router.navigate(['/country/edit-country/' + row.id]);
   }
 
   onClickDeleteCountry(row: any) {

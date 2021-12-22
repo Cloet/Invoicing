@@ -10,10 +10,11 @@ import { CoreModule } from './core/core.module';
 import { LandingPageComponent } from './core/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
-  { path: 'general', loadChildren: () => import('./general/general.module').then(m => m.GeneralModule)},
+  { path: 'country', loadChildren: () => import('./general/country/country.module').then(m => m.CountryModule) },
   { path: 'not-found', component: PageNotFoundComponent},
   { path: '**', component: PageNotFoundComponent}
 ]
@@ -32,8 +33,12 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [
+    BreadcrumbService
+  ],
+  bootstrap: [
+    AppComponent
+  ],
   entryComponents: [
     ErrorDialogComponent
   ]

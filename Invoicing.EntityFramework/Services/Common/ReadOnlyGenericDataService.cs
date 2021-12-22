@@ -41,7 +41,8 @@ namespace Invoicing.EntityFramework.Services.Common
 
         protected IQueryable<T> QueryModifiers(IQueryable<T> query)
         {
-            query = QueryIncludes(query);
+            query = QueryIncludes(query)
+                .OrderBy(x=> x.Id);
 
             if (AsNoTracking)
                 query = query.AsNoTracking();

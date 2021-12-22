@@ -25,7 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { BreadcrumbModule } from "xng-breadcrumb";
 
 @NgModule({
   declarations: [],
@@ -59,7 +59,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BreadcrumbModule
   ],
   exports: [
     CommonModule,
@@ -90,7 +91,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BreadcrumbModule
+  ],
+  providers: [
+    
   ]
 })
 export class SharedModule { }

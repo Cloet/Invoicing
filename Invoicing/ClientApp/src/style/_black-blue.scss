@@ -216,3 +216,15 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     padding-top: 10%;
 }
 
+.xng-breadcrumb-link {
+}
+
+.xng-breadcrumb-link:hover {
+  text-decoration: none;
+  color: #{$dark-accent-text};
+}
+
+.xng-breadcrumb-trail {
+  margin-bottom: 0rem;
+}
+

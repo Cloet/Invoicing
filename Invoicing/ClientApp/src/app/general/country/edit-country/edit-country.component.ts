@@ -71,7 +71,7 @@ export class EditCountryComponent implements OnInit {
 
     if (this.country.id === undefined || this.country.id <= 0) {
       this.showErrorDialog("Cannot delete country, entry not found.");
-      this.router.navigate(['/general/country']);
+      this.router.navigate(['/country']);
       return;
     }
 
@@ -82,7 +82,7 @@ export class EditCountryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._countryService.deleteCountry(this.country.id).subscribe(res => {
-          this.router.navigate(['/general/country']);
+          this.router.navigate(['/country']);
         });
       }
     });
