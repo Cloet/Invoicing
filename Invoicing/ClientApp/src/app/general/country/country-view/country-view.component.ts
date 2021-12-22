@@ -5,34 +5,40 @@ import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { IError } from '../../../common/model/errors.model';
+import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
 import { Router } from '@angular/router';
 import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-country-dialog.component';
-import { BaseComponent } from '../../../common/helpers/BaseComponent';
 
 @Component({
   selector: 'app-country-view',
   templateUrl: './country-view.component.html',
   styleUrls: ['./country-view.component.scss']
 })
-export class CountryViewComponent extends BaseComponent implements OnInit {
+export class CountryViewComponent implements OnInit {
 
   public countries : Country[] = [];
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false })
+    paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false })
+    sort!: MatSort;
   dataSource: MatTableDataSource<Country> = new MatTableDataSource(undefined);
   country!: Country;
 
+  public loadingError$ = this._countryService.loadingError$;
+
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
-  constructor(private _countryService: CountryService,
-              private _router: Router,
-              private _dialog: MatDialog)
-  {
-    super(_dialog);
-  }
+  constructor(private _countryService: CountryService, private _router : Router, private _dialog : MatDialog) { }
 
   ngOnInit(): void {
     this.refresh();
+
+    this._countryService.postError$.subscribe(
+      err => {
+        this.showErrorDialog(err);
+      }
+    )
 
     this._countryService.loadingError$.subscribe(
       err => {
@@ -42,6 +48,18 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
 
   }
 
+  showErrorDialog(errors: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: 'Error',
+      errors
+    };
+    const dialogRef = this._dialog.open(ErrorDialogComponent, dialogConfig);
+
+    return dialogRef.afterClosed();
+  }
+
   applyFilter(filterValue: Event) {
     if (filterValue != null) {
       this.dataSource.filter = (filterValue.target as HTMLInputElement).value.trim().toLowerCase();
@@ -49,7 +67,7 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
-    this._countryService.getCountries$().subscribe();
+    this._countryService.getCountries$().subscribe()
     this._countryService.getCountriesArray$().subscribe(
       response => {
         this.countries = response;
