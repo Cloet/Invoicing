@@ -1,0 +1,12 @@
+{
+	"language": "nl-NL",
+	"Theme": "Dark",
+	"Accent": "Blue",
+	"Logger": {
+		"LogLevel": 7,
+		"BaseDir": "Logging",
+		"SeparateLogFiles": false,
+		"ExtendedLogging": false,
+		"UseSubDirs":  false
+	}
+}

@@ -1,0 +1,9 @@
+<mat-toolbar color="primary" class="white-header">
+  <span>Invoicing</span>
+  <span fxFlex></span>
+  <button mat-button [matMenuTriggerFor]="general">General</button>
+  <mat-menu #general="matMenu">
+    <button mat-menu-item [routerLink]="['/general/country']">Country</button>
+    <button mat-menu-item [routerLink]="['/general/city']">City</button>
+  </mat-menu>
+</mat-toolbar>
