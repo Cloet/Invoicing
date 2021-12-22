@@ -23,6 +23,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -54,7 +56,10 @@ import { MatSortModule } from '@angular/material/sort'
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -82,7 +87,10 @@ import { MatSortModule } from '@angular/material/sort'
     FlexLayoutModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }

@@ -32,7 +32,8 @@ namespace Invoicing.Domain.Model.Common
 
         public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return null;
+            var results = new List<ValidationResult>();
+            return results;
         }
 
     }

@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewCountryComponent } from './view-country/view-country.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { ViewCityComponent } from './view-city/view-city.component';
-import { AddCountryComponent } from './add-country/add-country.component';
+import { AddCountryComponent } from './country-view/add-country/add-country.component';
+import { CountryViewComponent } from './country-view/country-view.component';
+import { CityViewComponent } from './city-view/city-view.component';
+import { DeleteCountryDialogComponent } from './country-view/delete-country-dialog/delete-country-dialog.component';
 
 const generalRoutes: Routes = [
   {
     path: 'country',
-    component: ViewCountryComponent
+    component: CountryViewComponent
   },
   {
     path: 'add-country',
@@ -17,15 +18,16 @@ const generalRoutes: Routes = [
   },
   {
     path: 'city',
-    component: ViewCityComponent
+    component: CityViewComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    ViewCountryComponent,
-    ViewCityComponent,
-    AddCountryComponent
+    CountryViewComponent,
+    CityViewComponent,
+    AddCountryComponent,
+    DeleteCountryDialogComponent
   ],
   imports: [
     CommonModule,

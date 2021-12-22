@@ -5,14 +5,14 @@ export class Country {
   private _name: string = '';
   private _countryCode: string = '';
     
-  constructor(private countryname: string, private countrycode: string) {
-    this.name = countryname;
-    this.countryCode = countrycode;
+  constructor() {
   }
 
   static fromJson(other: any): Country {
-    const country = new Country(other.name, other.countryCode);
-    country._id = other.id;
+    const country = new Country();
+    country.name = other.name;
+    country.countryCode = other.countryCode;
+    country.id = other.id;
     return country;
   }
 

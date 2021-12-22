@@ -29,6 +29,13 @@ namespace Invoicing.EntityFramework
 
         public DbSet<VAT> VATs { get; set; }
 
+        protected void CountryModel(ModelBuilder builder)
+        {
+            builder.Entity<Country>(country =>
+            {
+                country.HasIndex(c => c.CountryCode).IsUnique();
+            });
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

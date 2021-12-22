@@ -8,7 +8,6 @@ namespace Invoicing.Domain.Model
 {
     public class Country : SQLModelBase<Country>
     {
-
         [Required]
         public string Name { get; set; }
 

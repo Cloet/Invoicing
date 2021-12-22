@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Delete country</h1>
+<div mat-dialog-content>
+  <p>Are you sure you wish to delete this entry?</p>
+  <p>This cannot be undone..</p>
+</div>
+<div class="button-row" mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+  <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+</div>

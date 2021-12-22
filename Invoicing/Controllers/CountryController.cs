@@ -32,7 +32,7 @@ namespace Invoicing.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="country")]
         public async Task<IActionResult> GetCountry(int id)
         {
             var country = await _countryService.GetOneAsync(id);
@@ -59,7 +59,27 @@ namespace Invoicing.Controllers
                 Id = country.Id
             };
 
-            return CreatedAtRoute("DefaultApi", new { id = country.Id }, dto);
+            return CreatedAtRoute("country", new { id = country.Id }, dto);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCountry(int id)
+        {
+            try
+            {
+                var country = await _countryService.GetOneAsync(id);
+
+                if (country == null)
+                {
+                    return NotFound($"Country with Id = {id} not found.");
+                }
+
+                await _countryService.DeleteOneAsync(id);
+                return NoContent();
+            } catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+            }
         }
 
     }

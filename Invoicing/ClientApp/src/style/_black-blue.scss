@@ -162,10 +162,13 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 
 .mat-elevation-z8 {
-  background-color: #000000;
   font-family: "Montserrat";
   color: #fafafa;
-  border-top: solid 25px #ffffff;
+}
+
+.mat-table-view {
+  margin-top: 25px !important;
+  background-color: #000000;
 }
 
 .Filter {
@@ -176,30 +179,40 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color: white;
 }
 
+.Filter .mat-form-field-underline {
+  /* change color of underline */
+  background-color: #fafafa !important;
+}
+
+.Filter .mat-form-field-ripple {
+  /* change color of underline when focused */
+  background-color: #ffffff !important;
+}
+
 .mat-standard-chip {
   padding: .5em .85em;
   min-height: 2.5em;
 }
 
-.hogent-header-img {
-  height: 30px;
-  margin-right: 1.2em;
-}
-
-.mat-form-field-underline {
-  /*change color of underline*/
-  background-color: #fafafa !important;
-}
-
-.mat-form-field-ripple {
-  /*change color of underline when focused*/
-  background-color: #ffffff !important;
-}
-
-.placeholder {
+.Filter .placeholder {
   color: #ffffff;
 }
 
-.mat-focused .placeholder {
+.Filter .mat-focused .placeholder {
   color: #ffffff;
 }
+
+.loadingOrError {
+  height: 100vh;
+  width: 100vw;
+  margin: auto;
+}
+
+.loading-spinner-template {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: central;
+    padding-top: 10%;
+}
+
