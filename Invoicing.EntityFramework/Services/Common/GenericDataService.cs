@@ -43,17 +43,21 @@ namespace Invoicing.EntityFramework.Services.Common
                 }
 
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return true;
         }
         public virtual async Task<bool> CreateManyAsync(IEnumerable<T> entities)
         {
-            bool created = false;
-
             if (IsReadOnly)
             {
                 _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
@@ -74,12 +78,17 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 return true;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
-            return created;
         }
 
         public virtual T CreateOne(T entity)
@@ -99,9 +108,15 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 created = createdResult.Entity;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return created;
@@ -123,9 +138,15 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 created = createdResult.Entity;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return created;
@@ -149,10 +170,15 @@ namespace Invoicing.EntityFramework.Services.Common
                 }
                 return true;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
-                return false;
+                throw;
             }
         }
         public virtual async Task<bool> CreateOrUpdateManyAsync(IEnumerable<T> entities)
@@ -170,9 +196,15 @@ namespace Invoicing.EntityFramework.Services.Common
                     await CreateOrUpdateOneAsync(e);
                 }
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
             return false;
         }
@@ -217,9 +249,15 @@ namespace Invoicing.EntityFramework.Services.Common
                 }
 
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return deleted;
@@ -258,9 +296,15 @@ namespace Invoicing.EntityFramework.Services.Common
                 }
 
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return deleted;
@@ -296,9 +340,15 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 deleted = true;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return deleted;
@@ -334,9 +384,15 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 deleted = true;
             }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
+                throw;
             }
 
             return deleted;
@@ -378,6 +434,11 @@ namespace Invoicing.EntityFramework.Services.Common
 
                 // Nieuwe object uit db halen.
                 return GetOne(entity.Id);
+            }
+            catch (DbUpdateException ex)
+            {
+                _dataserviceLogger.Error(ex);
+                throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {

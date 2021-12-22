@@ -26,14 +26,14 @@ export class AddCountryComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(2),
-          Validators.pattern('[a-zA-Z]*')
+          Validators.pattern('[A-Z _-]*')
         ]
       ],
       name: [
         '',
         [
           Validators.required,
-          Validators.minLength(2),
+          Validators.minLength(3),
           Validators.pattern('[a-zA-Z0-9 _-]*')
         ]
       ]
@@ -53,10 +53,11 @@ export class AddCountryComponent implements OnInit {
   addCountry() {
     if (this.countryForm?.valid) {
       this._countryService.createCountry$(this.country).subscribe(response => {
-        //log('returned id' + response.id);
-        this.router.navigate(
-          ['/general/country']
-        );
+        if (response.id != null && response.id > 0) {
+          this.router.navigate(
+            ['/general/country']
+          );
+        }
       });
     }
   }
@@ -74,12 +75,18 @@ export class AddCountryComponent implements OnInit {
   }
 
   getErrorMessageText(errorName: string, errorvalue?: any) {
-    const errors = {
-      required: 'Required',
-      minlength: `Min. amount of characters ${errorvalue.requiredLength}`,
-      pattern: 'Only letters, digits, spaces, "_" and "-" are allowed'
-    };
-    return errors.required;
+    let dict = new Map<string, string>();
+
+    dict.set('required', "Required");
+    dict.set('minlength', `Min. amount of characters ${errorvalue.requiredLength}`)
+
+    if (errorName === 'pattern' && errorvalue.requiredPattern === "^[A-Z _-]*$") {
+      dict.set('pattern', 'Only CAPITAL letters are allowed.')
+    } else {
+      dict.set('pattern', 'Only letters and digits are allowed')
+    }
+
+    return dict.get(errorName);
   }
 
 }

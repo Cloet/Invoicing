@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Invoicing.Domain.Model;
 using Invoicing.EntityFramework.Services;
+using Invoicing.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Invoicing.Controllers
@@ -25,24 +26,38 @@ namespace Invoicing.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCountries()
         {
-            var countries = (await _countryService.GetAllAsync()).ToList();
+            try {
+                var countries = (await _countryService.GetAllAsync()).ToList();
 
-            var dto = _mapper.Map<IEnumerable<CountryDTO>>(countries);
+                if (!countries.Any())
+                    return NotFound(new ValidationError("",$"No countries found..."));
 
-            return Ok(dto);
+                var dto = _mapper.Map<IEnumerable<CountryDTO>>(countries);
+
+                return Ok(dto);
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+            }
         }
 
         [HttpGet("{id}", Name="country")]
         public async Task<IActionResult> GetCountry(int id)
         {
-            var country = await _countryService.GetOneAsync(id);
+            try {
+                var country = await _countryService.GetOneAsync(id);
 
-            if (country == null)
-                return NotFound();
+                if (country == null)
+                    return NotFound(new ValidationError("", $"Country with Id = {id} not found."));
 
-            var dto = _mapper.Map<CountryDTO>(country);
+                var dto = _mapper.Map<CountryDTO>(country);
 
-            return Ok(dto);
+                return Ok(dto);
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("",ex.Message));
+            }
+            
         }
 
         [HttpPost]
@@ -50,16 +65,48 @@ namespace Invoicing.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            country = await _countryService.CreateOneAsync(country);
+            try {
+                var c = (await _countryService.FilterAsync(x => x.CountryCode == country.CountryCode || x.Id == country.Id, 1));
 
-            var dto = new CountryDTO
+                if (c.Count() > 0)
+                {
+                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError("CountryCode", $"A country with code {country.CountryCode} already exists."));
+                }
+
+                country = await _countryService.CreateOneAsync(country);
+
+                var dto = _mapper.Map<CountryDTO>(country);
+
+                return CreatedAtRoute("country", new { id = country.Id }, dto);
+            }
+            catch (Exception ex)
             {
-                CountryCode = country.CountryCode,
-                Name = country.Name,
-                Id = country.Id
-            };
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+            }
+        }
 
-            return CreatedAtRoute("country", new { id = country.Id }, dto);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCountry(int id, Country country)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                country.Id = id;
+                var c = await _countryService.GetOneAsync(country.Id);
+
+                if (c == null)
+                    return NotFound(new ValidationError("", $"No country was found with countrycode {country.CountryCode}"));
+
+                country = await _countryService.UpdateOneAsync(country);
+                var dto = _mapper.Map<CountryDTO>(country);
+
+                return CreatedAtRoute("country", new { id = country.Id }, dto);
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+            }
         }
 
         [HttpDelete("{id}")]
@@ -71,14 +118,14 @@ namespace Invoicing.Controllers
 
                 if (country == null)
                 {
-                    return NotFound($"Country with Id = {id} not found.");
+                    return NotFound(new ValidationError("", $"Country with Id = {id} not found."));
                 }
 
                 await _countryService.DeleteOneAsync(id);
                 return NoContent();
-            } catch (Exception)
+            } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
             }
         }
 

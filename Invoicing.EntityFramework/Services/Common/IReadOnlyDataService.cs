@@ -12,6 +12,8 @@ namespace Invoicing.EntityFramework.Services.Common
     {
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter);
         public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter);
+        public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, int results);
+        public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, int results);
         public T FirstRecord();
         public Task<T> FirstRecordAsync();
         public IEnumerable<T> GetAll();

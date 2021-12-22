@@ -12,6 +12,7 @@ namespace Invoicing.Domain.Model
         public string Name { get; set; }
 
         [Required]
+        [RegularExpression("^[A-Z _-]*")]
         public string CountryCode { get; set; }
 
     }

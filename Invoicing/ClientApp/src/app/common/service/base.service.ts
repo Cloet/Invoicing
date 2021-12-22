@@ -10,8 +10,9 @@ import { IError } from '../model/errors.model';
 export class BaseService {
 
   protected serviceUrl = `${environment.backendApi}`;
-  public postError$ = new Subject<IError[]>();
-  public loadingError$ = new Subject<IError[]>();
+  public postError$ = new Subject<string>();
+  public loadingError$ = new Subject<string>();
+  public putError$ = new Subject<string>();
 
   constructor(protected http: HttpClient) { }
 

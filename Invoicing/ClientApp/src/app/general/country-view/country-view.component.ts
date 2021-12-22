@@ -8,6 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteCountryDialogComponent } from './delete-country-dialog/delete-country-dialog.component';
 import { IError } from '../../common/model/errors.model';
 import { ErrorDialogComponent } from '../../error-dialog/error-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-country-view',
@@ -28,7 +29,7 @@ export class CountryViewComponent implements OnInit {
 
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
-  constructor(private _countryService: CountryService, private _dialog : MatDialog) { }
+  constructor(private _countryService: CountryService, private _router : Router, private _dialog : MatDialog) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -47,7 +48,7 @@ export class CountryViewComponent implements OnInit {
 
   }
 
-  showErrorDialog(errors: IError[]) {
+  showErrorDialog(errors: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
@@ -75,6 +76,10 @@ export class CountryViewComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
       }
     );
+  }
+
+  onNavigateRow(row: any) {
+    this._router.navigate(['/general/edit-country/' + row.id]);
   }
 
   onClickDeleteCountry(row: any) {

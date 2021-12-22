@@ -43,6 +43,8 @@ namespace Invoicing.EntityFramework
             {
                 entityType.SetTableName(entityType.DisplayName());
             }
+
+            CountryModel(modelBuilder);
         }
 
     }

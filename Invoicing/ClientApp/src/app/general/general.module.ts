@@ -6,6 +6,7 @@ import { AddCountryComponent } from './country-view/add-country/add-country.comp
 import { CountryViewComponent } from './country-view/country-view.component';
 import { CityViewComponent } from './city-view/city-view.component';
 import { DeleteCountryDialogComponent } from './country-view/delete-country-dialog/delete-country-dialog.component';
+import { EditCountryComponent } from './country-view/edit-country/edit-country.component';
 
 const generalRoutes: Routes = [
   {
@@ -15,6 +16,10 @@ const generalRoutes: Routes = [
   {
     path: 'add-country',
     component: AddCountryComponent
+  },
+  {
+    path: 'edit-country/:id',
+    component: EditCountryComponent
   },
   {
     path: 'city',
@@ -27,7 +32,8 @@ const generalRoutes: Routes = [
     CountryViewComponent,
     CityViewComponent,
     AddCountryComponent,
-    DeleteCountryDialogComponent
+    DeleteCountryDialogComponent,
+    EditCountryComponent
   ],
   imports: [
     CommonModule,

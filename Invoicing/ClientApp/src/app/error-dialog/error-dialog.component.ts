@@ -9,14 +9,13 @@ import { IError } from '../common/model/errors.model';
 })
 export class ErrorDialogComponent implements OnInit {
 
-  errors: IError[] = [];
+  errors!: string;
 
   constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+   
   }
 
   ngOnInit() {
-    console.log(this.data);
-    console.log(this.data.errors);
     this.errors = this.data.errors;
   }
 

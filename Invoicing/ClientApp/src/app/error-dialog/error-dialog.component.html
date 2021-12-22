@@ -1,16 +1,11 @@
-<div class="container">
-        <h1 mat-dialog-title>{{data?.title}}</h1>
-        <!-- This is the content of the dialog, containing a list of the files to upload -->
-        <mat-dialog-content>
-            <div>
-                <h3>Er ging iets mis: </h3>
-                <p *ngFor="let error of errors" >{{error.message}}</p>
+<h1 mat-dialog-title>{{data?.title}}</h1>
+<mat-dialog-content>
+  <div>
+    <h3>Something went wrong: </h3>
+    <p>{{ errors }}</p>
 
-            </div>
-        </mat-dialog-content>
-    
-        <!-- This are the actions of the dialog, containing the primary and the cancel button-->
-        <mat-dialog-actions class="button-row">
-            <button mat-button mat-dialog-close>Sluiten</button>
-        </mat-dialog-actions>
-    </div>
+  </div>
+</mat-dialog-content>
+<div class="button-row" mat-dialog-actions>
+  <button mat-button mat-dialog-close="true">Close</button>
+</div>

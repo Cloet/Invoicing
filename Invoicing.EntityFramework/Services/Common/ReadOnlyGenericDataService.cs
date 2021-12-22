@@ -24,7 +24,7 @@ namespace Invoicing.EntityFramework.Services.Common
             {
                 options = new DataServiceOptions()
                 {
-                    AsNoTracking = false,
+                    AsNoTracking = true,
                     IsReadOnly = false
                 };
             }
@@ -52,21 +52,33 @@ namespace Invoicing.EntityFramework.Services.Common
         #region Filter
         public virtual IEnumerable<T> Filter(Expression<Func<T, bool>> filter)
         {
+            return Filter(filter, -1);
+        }
+        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter)
+        {
+            return await FilterAsync(filter, -1);
+        }
+        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, int results = -1)
+        {
+            return await Task.Run(() => Filter(filter, results));
+        }
+
+        public virtual IEnumerable<T> Filter(Expression<Func<T,bool>> filter, int results = -1)
+        {
             try
             {
                 var set = _dbContext.Set<T>();
-                return QueryModifiers(set.Where(filter))
-                    .ToList();
+
+                if (results > 0)
+                    return QueryModifiers(set.Where(filter)).Take(results);
+
+                return QueryModifiers(set.Where(filter));
             }
             catch (Exception ex)
             {
                 _dataserviceLogger.Error(ex);
                 throw;
             }
-        }
-        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter)
-        {
-            return await Task.Run(() => Filter(filter));
         }
         #endregion
 

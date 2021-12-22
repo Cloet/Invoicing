@@ -27,7 +27,7 @@ export class CountryService extends BaseService {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(error.error);
             this.handleError(error);
             return of(error);
         }),
@@ -71,6 +71,24 @@ export class CountryService extends BaseService {
       );
   }
 
+  updateCountry$(country: Country): Observable<Country> {
+    const headers = this.defaultHeaders();
+    const options = { headers };
+    const payload = JSON.stringify(country);
+
+    return this.http.put(`${this.serviceUrl}/country/${country.id}`, payload, options)
+      .pipe(
+        catchError(error => {
+          this.putError$.next(error.error.message);
+          this.handleError(error);
+          return of(error);
+        }),
+        tap(x => this.updateCountry(Country.fromJson(x))),
+        map(Country.fromJson)
+      );
+
+  }
+    
   deleteCountry(id: number) {
     const headers = this.defaultHeaders();
     const options = { headers };
@@ -84,6 +102,13 @@ export class CountryService extends BaseService {
         }),
         tap((res => this.removeCountry(id)))
       );
+  }
+
+  private updateCountry(country: Country) {
+    let arrayCopy = this._countries.value;
+    const index = arrayCopy.findIndex(item => item.id === country.id);
+    arrayCopy[index] = country;
+    this._countries.next(arrayCopy);
   }
 
   private removeCountry(id: number) {
