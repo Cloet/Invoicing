@@ -1,5 +1,5 @@
 ﻿using Invoicing.Domain.Model;
-using Invoicing.Domain.Services.Common;
+using Invoicing.EntityFramework.Services.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Services
 {
-    public interface IUserService : IReadOnlyDataService<User>
+    public interface IUserService: IGenericService<User>
     {
     }
 }

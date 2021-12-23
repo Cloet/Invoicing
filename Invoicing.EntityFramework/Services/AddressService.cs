@@ -1,12 +1,18 @@
 ﻿using Invoicing.Domain.Model;
-using Invoicing.EntityFramework.Services.Common;
+using Invoicing.EntityFramework.Repositories;
+using Invoicing.EntityFramework.Services.common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Services
 {
-    public class AddressService : GenericDataService<Address, InvoicingDbContext>, IAddressService
+    public class AddressService: GenericService<Address>, IAddressService
     {
 
-        public AddressService(IDbContextFactory<InvoicingDbContext> contextFactory) : base(contextFactory)
+        public AddressService(IAddressRepository repository): base(repository)
         {
 
         }

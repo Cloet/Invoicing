@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
-    <Folder Include="Comparers\" />
-    <Folder Include="Exceptions\" />
+    <Compile Remove="Comparers\**" />
+    <Compile Remove="Exceptions\**" />
+    <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Comparers\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="Comparers\**" />
+    <None Remove="Exceptions\**" />
+    <None Remove="Helpers\**" />
   </ItemGroup>
 
   <ItemGroup>

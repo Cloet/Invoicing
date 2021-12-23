@@ -6,21 +6,17 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Invoicing.EntityFramework.Services.Common
+namespace Invoicing.EntityFramework.Repositories.Common
 {
-    public interface IGenericDataService<T> : IReadOnlyDataService<T> where T : SQLModelBase<T>
+    public interface IGenericDataRepository<T> : IReadOnlyDataRepository<T> where T : SQLModelBase<T>
     {
+        public TEntity Detach<TEntity>(TEntity entity);
+
         public bool CreateMany(IEnumerable<T> entities);
         public Task<bool> CreateManyAsync(IEnumerable<T> entities);
 
         public T CreateOne(T entity);
         public Task<T> CreateOneAsync(T entity);
-
-        public bool CreateOrUpdateMany(IEnumerable<T> entities);
-        public Task<bool> CreateOrUpdateManyAsync(IEnumerable<T> entities);
-
-        public T CreateOrUpdateOne(T entity);
-        public Task<T> CreateOrUpdateOneAsync(T entity);
 
         public bool DeleteMany(IEnumerable<T> entities);
         public bool DeleteMany(Expression<Func<T, bool>> filter);

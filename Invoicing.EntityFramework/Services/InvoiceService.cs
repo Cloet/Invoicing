@@ -1,6 +1,6 @@
 ﻿using Invoicing.Domain.Model;
-using Invoicing.EntityFramework;
-using Invoicing.EntityFramework.Services.Common;
+using Invoicing.EntityFramework.Repositories;
+using Invoicing.EntityFramework.Services.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Services
 {
-    public class InvoiceService : GenericDataService<Invoice, InvoicingDbContext>, IInvoiceService
+    public class InvoiceService: GenericService<Invoice>, IInvoiceService
     {
-
-        public InvoiceService(IDbContextFactory<InvoicingDbContext> contextFactory) : base(contextFactory)
+        public InvoiceService(IInvoiceRepository repository): base(repository)
         {
 
         }
+
     }
 }

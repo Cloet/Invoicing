@@ -1,5 +1,4 @@
 ﻿using Invoicing.Domain.Model.Common;
-using Invoicing.Domain.Services.Common;
 using Invoicing.Base.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -10,15 +9,21 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Invoicing.EntityFramework.Services.Common
+namespace Invoicing.EntityFramework.Repositories.Common
 {
-    public abstract class GenericDataService<T, TContext> : ReadOnlyGenericDataService<T, TContext>, IDataService<T> where T : SQLModelBase<T> where TContext : SQLDbContext
+    public abstract class GenericDataRepository<T, TContext> : ReadOnlyGenericDataRepository<T, TContext>, IGenericDataRepository<T> where T : SQLModelBase<T> where TContext : SQLDbContext
     {
 
         public bool IsReadOnly => _options.IsReadOnly;
 
-        public GenericDataService(IDbContextFactory<TContext> contextFactory, DataServiceOptions options = null) : base(contextFactory, options)
+        public GenericDataRepository(IDbContextFactory<TContext> contextFactory, DataRepoOptions options = null) : base(contextFactory, options)
         {
+        }
+
+        public virtual TEntity Detach<TEntity>(TEntity entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         #region Create
@@ -26,7 +31,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute a create operation on a readonly service.");
             }
 
@@ -36,21 +41,21 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.SaveChanges();
 
                 // Log created objects.
-                if (_dataserviceLogger.LoggerLevel >= LogLevel.Trace)
+                if (_datarepositoryLogger.LoggerLevel >= LogLevel.Trace)
                 {
                     foreach (var e in entities)
-                        _dataserviceLogger.TraceObjectCreation(e);
+                        _datarepositoryLogger.TraceObjectCreation(e);
                 }
 
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -60,7 +65,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute a create operation on a readonly service.");
             }
 
@@ -70,22 +75,22 @@ namespace Invoicing.EntityFramework.Services.Common
                 await _dbContext.SaveChangesAsync();
 
                 // Log created objects.
-                if (_dataserviceLogger.LoggerLevel >= LogLevel.Trace)
+                if (_datarepositoryLogger.LoggerLevel >= LogLevel.Trace)
                 {
                     foreach (var e in entities)
-                        _dataserviceLogger.TraceObjectCreation(e);
+                        _datarepositoryLogger.TraceObjectCreation(e);
                 }
 
                 return true;
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -97,7 +102,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute a create operation on a readonly service.");
             }
 
@@ -110,12 +115,12 @@ namespace Invoicing.EntityFramework.Services.Common
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -127,7 +132,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute a create operation on a readonly service.");
             }
 
@@ -140,88 +145,16 @@ namespace Invoicing.EntityFramework.Services.Common
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
             return created;
-        }
-        #endregion
-
-        #region Create Or Update		
-        public virtual bool CreateOrUpdateMany(IEnumerable<T> entities)
-        {
-            if (IsReadOnly)
-            {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
-                throw new InvalidOperationException("Cannot execute an update or create operation on a readonly service.");
-            }
-
-            try
-            {
-                foreach (var e in entities)
-                {
-                    CreateOrUpdateOne(e);
-                }
-                return true;
-            }
-            catch (DbUpdateException ex)
-            {
-                _dataserviceLogger.Error(ex);
-                throw new InvalidOperationException(ex.InnerException.Message);
-            }
-            catch (Exception ex)
-            {
-                _dataserviceLogger.Error(ex);
-                throw;
-            }
-        }
-        public virtual async Task<bool> CreateOrUpdateManyAsync(IEnumerable<T> entities)
-        {
-            if (IsReadOnly)
-            {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
-                throw new InvalidOperationException("Cannot execute an update or create operation on a readonly service.");
-            }
-
-            try
-            {
-                foreach (var e in entities)
-                {
-                    await CreateOrUpdateOneAsync(e);
-                }
-            }
-            catch (DbUpdateException ex)
-            {
-                _dataserviceLogger.Error(ex);
-                throw new InvalidOperationException(ex.InnerException.Message);
-            }
-            catch (Exception ex)
-            {
-                _dataserviceLogger.Error(ex);
-                throw;
-            }
-            return false;
-        }
-
-        public virtual T CreateOrUpdateOne(T entity)
-        {
-            if (entity.IsNew())
-                return CreateOne(entity);
-
-            return UpdateOne(entity);
-        }
-        public virtual async Task<T> CreateOrUpdateOneAsync(T entity)
-        {
-            if (entity.IsNew())
-                return await CreateOneAsync(entity);
-
-            return await UpdateOneAsync(entity);
         }
         #endregion
 
@@ -233,7 +166,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -242,21 +175,21 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.Set<T>().RemoveRange(entities);
                 _dbContext.SaveChanges();
 
-                if (_dataserviceLogger.LoggerLevel >= LogLevel.Trace)
+                if (_datarepositoryLogger.LoggerLevel >= LogLevel.Trace)
                 {
                     foreach (var e in entities)
-                        _dataserviceLogger.TraceObjectDeletion(e);
+                        _datarepositoryLogger.TraceObjectDeletion(e);
                 }
 
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -266,7 +199,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -280,7 +213,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -289,21 +222,21 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.Set<T>().RemoveRange(entities);
                 await _dbContext.SaveChangesAsync();
 
-                if (_dataserviceLogger.LoggerLevel >= LogLevel.Trace)
+                if (_datarepositoryLogger.LoggerLevel >= LogLevel.Trace)
                 {
                     foreach (var e in entities)
-                        _dataserviceLogger.TraceObjectDeletion(e);
+                        _datarepositoryLogger.TraceObjectDeletion(e);
                 }
 
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -313,7 +246,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -327,7 +260,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -336,18 +269,18 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.Remove(entity);
                 _dbContext.SaveChanges();
 
-                _dataserviceLogger.TraceObjectDeletion(entity);
+                _datarepositoryLogger.TraceObjectDeletion(entity);
 
                 deleted = true;
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -357,7 +290,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -371,7 +304,7 @@ namespace Invoicing.EntityFramework.Services.Common
 
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -380,18 +313,18 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.Remove(entity);
                 await _dbContext.SaveChangesAsync();
 
-                _dataserviceLogger.TraceObjectDeletion(entity);
+                _datarepositoryLogger.TraceObjectDeletion(entity);
 
                 deleted = true;
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
 
@@ -401,7 +334,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute delete operation on a readonly service.");
             }
 
@@ -417,7 +350,7 @@ namespace Invoicing.EntityFramework.Services.Common
         {
             if (IsReadOnly)
             {
-                _dataserviceLogger.Error("Cannot execute CRUD operation on an readonly service.");
+                _datarepositoryLogger.Error("Cannot execute CRUD operation on an readonly service.");
                 throw new InvalidOperationException("Cannot execute an update operation on a readonly service.");
             }
 
@@ -430,19 +363,19 @@ namespace Invoicing.EntityFramework.Services.Common
                 _dbContext.Set<T>().Update(entity);
                 _dbContext.SaveChanges();
 
-                _dataserviceLogger.TraceObjectSave(orig, entity);
+                _datarepositoryLogger.TraceObjectSave(orig, entity);
 
                 // Nieuwe object uit db halen.
                 return GetOne(entity.Id);
             }
             catch (DbUpdateException ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw new InvalidOperationException(ex.InnerException.Message);
             }
             catch (Exception ex)
             {
-                _dataserviceLogger.Error(ex);
+                _datarepositoryLogger.Error(ex);
                 throw;
             }
         }

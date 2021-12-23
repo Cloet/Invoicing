@@ -27,7 +27,7 @@ export class CountryService extends BaseService {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error);
+            this.loadingError$.next(error.error.message);
             this.handleError(error);
             return of(error);
         }),

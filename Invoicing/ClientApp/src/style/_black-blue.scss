@@ -159,8 +159,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   min-height: 2.5em;
 }
 
-
-
 .mat-elevation-z8 {
   font-family: "Montserrat";
   color: #fafafa;
@@ -168,7 +166,11 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 .mat-table-view {
   margin-top: 25px !important;
+  margin-bottom: 35px !important;
   background-color: #000000;
+}
+
+.main-container {
 }
 
 .Filter {
@@ -204,7 +206,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 .loadingOrError {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   margin: auto;
 }
 

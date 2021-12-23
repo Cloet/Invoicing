@@ -9,7 +9,6 @@ import { BreadcrumbService } from 'xng-breadcrumb';
 export class CountryDisplayScreenComponent implements OnInit {
 
   constructor(
-    private breadcrumbService: BreadcrumbService
   ) {
   }
 

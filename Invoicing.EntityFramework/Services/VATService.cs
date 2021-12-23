@@ -1,5 +1,6 @@
 ﻿using Invoicing.Domain.Model;
-using Invoicing.EntityFramework.Services.Common;
+using Invoicing.EntityFramework.Repositories;
+using Invoicing.EntityFramework.Services.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Services
 {
-    public class VATService : GenericDataService<VAT, InvoicingDbContext>, IVATService
+    public class VATService: GenericService<VAT>, IVATService
     {
 
-        public VATService(IDbContextFactory<InvoicingDbContext> contextFactory) : base(contextFactory)
+        public VATService(IVATRepository repository) : base(repository)
         {
 
         }

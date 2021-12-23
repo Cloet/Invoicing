@@ -18,14 +18,10 @@ import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-co
 export class CountryViewComponent implements OnInit {
 
   public countries : Country[] = [];
-  @ViewChild(MatPaginator, { static: false })
-    paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: false })
-    sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<Country> = new MatTableDataSource(undefined);
   country!: Country;
-
-  public loadingError$ = this._countryService.loadingError$;
 
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
@@ -72,8 +68,8 @@ export class CountryViewComponent implements OnInit {
       response => {
         this.countries = response;
         this.dataSource = new MatTableDataSource(this.countries);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        setTimeout(() => this.dataSource.sort = this.sort);
+        setTimeout(() => this.dataSource.paginator = this.paginator);
       }
     );
   }

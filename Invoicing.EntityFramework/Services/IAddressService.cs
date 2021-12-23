@@ -1,9 +1,14 @@
 ﻿using Invoicing.Domain.Model;
-using Invoicing.EntityFramework.Services.Common;
+using Invoicing.EntityFramework.Services.common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Services
 {
-    public interface IAddressService : IGenericDataService<Address>
+    public interface IAddressService: IGenericService<Address>
     {
     }
 }

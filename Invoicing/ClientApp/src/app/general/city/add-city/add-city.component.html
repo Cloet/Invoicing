@@ -1,0 +1,19 @@
+<mat-card class="mat-elevation-z10">
+  <mat-card-title>Create city</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="cityForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="city-code">
+        <input id="code" matInput aria-label="Postal" type="text" formControlName="postal" required />
+        <mat-placeholder class="placeholder">postal</mat-placeholder>
+        <mat-error>{{ getErrorMessage(cityForm?.get('name')) }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="city-name">
+        <input id="name" matInput aria-label="Name" type="text" formControlName="name" required />
+        <mat-placeholder class="placeholder">name</mat-placeholder>
+        <mat-error>{{ getErrorMessage(cityForm?.get('postal')) }}</mat-error>
+      </mat-form-field>
+      <br />
+      <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!cityForm.valid">CREATE CITY</button>
+    </form>
+  </mat-card-content>
+</mat-card>

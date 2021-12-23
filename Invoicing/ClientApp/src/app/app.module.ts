@@ -15,6 +15,7 @@ import { BreadcrumbService } from 'xng-breadcrumb';
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'country', loadChildren: () => import('./general/country/country.module').then(m => m.CountryModule) },
+  { path: 'city', loadChildren: () => import('./general/city/city.module').then(m => m.CityModule) },
   { path: 'not-found', component: PageNotFoundComponent},
   { path: '**', component: PageNotFoundComponent}
 ]

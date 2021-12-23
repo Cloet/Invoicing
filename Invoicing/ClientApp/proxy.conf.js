@@ -7,6 +7,7 @@ const PROXY_CONFIG = [
   {
     context: [
       "/api/country",
+      "/api/city",
    ],
     target: target,
     secure: false

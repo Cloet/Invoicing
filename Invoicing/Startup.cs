@@ -18,6 +18,7 @@ namespace Invoicing
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new AutofacMainModule());
+            builder.RegisterModule(new AutofacRepositoryModule());
             builder.RegisterModule(new AutofacServiceModule());
         }
 

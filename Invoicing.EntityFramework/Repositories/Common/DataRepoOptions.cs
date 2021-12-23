@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Invoicing.EntityFramework.Services.Common
+namespace Invoicing.EntityFramework.Repositories.Common
 {
-    public class DataServiceOptions
+    public class DataRepoOptions
     {
 
         public bool IsReadOnly { get; set; } = false;
 
         public bool AsNoTracking { get; set; } = false;
 
-        public DataServiceOptions()
+        public DataRepoOptions()
         {
 
         }
