@@ -30,7 +30,7 @@ namespace Invoicing.Controllers
                 var countries = (await _countryService.GetAllAsync()).ToList();
 
                 if (!countries.Any())
-                    return NotFound(new ValidationError("",$"No countries found..."));
+                    return NoContent();
 
                 var dto = _mapper.Map<IEnumerable<CountryDTO>>(countries);
 
@@ -66,7 +66,7 @@ namespace Invoicing.Controllers
                 return BadRequest(ModelState);
 
             try {
-                var c = (await _countryService.FilterAsync(x => x.CountryCode == country.CountryCode || x.Id == country.Id, 1));
+                var c = (await _countryService.FilterAsync(x => x.CountryCode == country.CountryCode || x.Id == country.Id,null, 1));
 
                 if (c.Count() > 0)
                 {

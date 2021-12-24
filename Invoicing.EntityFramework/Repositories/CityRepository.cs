@@ -1,5 +1,6 @@
 ﻿using Invoicing.Domain.Model;
 using Invoicing.EntityFramework.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace Invoicing.EntityFramework.Repositories
 
         public CityRepository(IDbContextFactory<InvoicingDbContext> contextFactory) : base(contextFactory)
         {
+        }
+
+        protected override IQueryable<City> QueryIncludes(IQueryable<City> query)
+        {
+            query = base.QueryIncludes(query);
+            return query.Include(c => c.Country);
         }
 
     }

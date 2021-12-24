@@ -69,13 +69,11 @@ namespace Invoicing.Controllers
 
             try
             {
-                var c = await _cityService.FilterAsync(x => x.Id == city.Id || (x.Name == city.Name && x.Postal == city.Postal && x.Country == city.Country), 1);
+                var c = await _cityService.FilterAsync(x => x.Id == city.Id || (x.Name == city.Name && x.Postal == city.Postal && x.Country == city.Country),null, 1);
 
                 if (c.Count() > 0)
                     return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError("", $"A city with the same name and postal code already exists for this country."));
-
-                city.CountryID = city.Country.Id;
-                city.Country = null;
+                
                 city = await _cityService.CreateOneAsync(city);
                 var dto = _mapper.Map<CityDTO>(city);
 

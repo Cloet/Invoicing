@@ -3,7 +3,6 @@ using System;
 using Invoicing.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,10 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Invoicing.EntityFramework.Migrations
 {
     [DbContext(typeof(InvoicingDbContext))]
-    [Migration("20211214161937_InitialCreate")]
-    partial class InitialCreate
+    partial class InvoicingDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,6 +124,9 @@ namespace Invoicing.EntityFramework.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryCode")
+                        .IsUnique();
 
                     b.ToTable("Country");
                 });

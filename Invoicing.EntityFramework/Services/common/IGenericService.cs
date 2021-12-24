@@ -10,14 +10,22 @@ namespace Invoicing.EntityFramework.Services.common
 {
     public interface IGenericService<T> where T : SQLModelBase<T>
     {
+        public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1);
+
+        public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, int take = -1, int skip = -1);
+
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter);
+
+        public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1);
+
+        public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, int take = -1, int skip = -1);
+
         public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter);
-        public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, int results);
-        public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, int results);
+
         public T FirstRecord();
         public Task<T> FirstRecordAsync();
-        public IEnumerable<T> GetAll();
-        public Task<IEnumerable<T>> GetAllAsync();
+        public IEnumerable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
+        public Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
         public T GetOne(int id);
         public Task<T> GetOneAsync(int id);
         public T LastRecord();

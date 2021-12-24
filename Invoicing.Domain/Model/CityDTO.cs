@@ -15,5 +15,7 @@ namespace Invoicing.Domain.Model
 
         public string Postal { get; set; }
 
+        public CountryDTO Country { get; set; }
+
     }
 }

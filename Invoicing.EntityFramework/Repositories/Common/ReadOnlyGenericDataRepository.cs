@@ -39,48 +39,56 @@ namespace Invoicing.EntityFramework.Repositories.Common
             return query;
         }
 
-        protected IQueryable<T> QueryModifiers(IQueryable<T> query)
+        protected virtual IQueryable<T> QueryModifiers(IQueryable<T> query)
         {
-            query = QueryIncludes(query)
-                .OrderBy(x => x.Id);
-
             if (AsNoTracking)
                 query = query.AsNoTracking();
 
             return query;
         }
-
+       
         #region Filter
-        public virtual async Task<IQueryable<T>> FilterAsync(Expression<Func<T, bool>> filter, int results = -1)
+        public virtual async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1)
         {
-            return await Task.Run(() => Filter(filter, results));
+            return await Task.Run(() => Filter(filter, orderBy, skip, take));
         }
 
-        public virtual IQueryable<T> Filter(Expression<Func<T, bool>> filter, int results = -1)
+        public virtual IEnumerable<T> Filter(Expression<Func<T,bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1)
         {
             try
             {
-                var set = _dbContext.Set<T>();
+                var query = QueryIncludes(_dbContext.Set<T>());
+                query = QueryModifiers(query);
 
-                if (results > 0)
-                    return QueryModifiers(set.Where(filter)).Take(results);
+                if (filter != null)
+                    query = query.Where(filter);
+                if (orderBy != null)
+                    query = orderBy(query);
+                if (skip > 0)
+                    query = query.Skip(skip);
+                if (take > 0)
+                    query = query.Take(take);
 
-                return QueryModifiers(set.Where(filter));
-            }
-            catch (Exception ex)
+                return query;
+            } catch (Exception ex)
             {
                 _datarepositoryLogger.Error(ex);
                 throw;
             }
         }
+
+
         #endregion
 
         #region Get All
-        public virtual IQueryable<T> GetAll()
+        public virtual IEnumerable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             try
             {
-                return QueryModifiers(_dbContext.Set<T>());
+                var query = QueryModifiers(QueryIncludes(_dbContext.Set<T>()));
+                if (orderBy != null)
+                    query = orderBy(query);
+                return query;
             }
             catch (Exception ex)
             {
@@ -88,9 +96,9 @@ namespace Invoicing.EntityFramework.Repositories.Common
                 throw;
             }
         }
-        public virtual async Task<IQueryable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
-            return await Task.Run(() => GetAll());
+            return await Task.Run(() => GetAll(orderBy));
         }
         #endregion
 
@@ -99,7 +107,7 @@ namespace Invoicing.EntityFramework.Repositories.Common
         {
             try
             {
-                return QueryModifiers(_dbContext.Set<T>())
+                return QueryModifiers(QueryIncludes(_dbContext.Set<T>()))
                     .FirstOrDefault(x => x.Id == id);
             }
             catch (Exception ex)

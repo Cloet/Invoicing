@@ -10,12 +10,13 @@ namespace Invoicing.EntityFramework.Repositories.Common
 {
     public interface IReadOnlyDataRepository<T> where T : SQLModelBase<T>
     {
-        public IQueryable<T> Filter(Expression<Func<T, bool>> filter, int results);
-        public Task<IQueryable<T>> FilterAsync(Expression<Func<T, bool>> filter, int results);
-        public IQueryable<T> GetAll();
-        public Task<IQueryable<T>> GetAllAsync();
+        public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int take = -1, int skip = -1);
+        public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int take = -1, int skip = -1);
+        public IEnumerable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
+        public Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
         public T GetOne(int id);
         public Task<T> GetOneAsync(int id);
+
 
     }
 }

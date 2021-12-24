@@ -18,11 +18,11 @@ namespace Invoicing.Domain.Model
         [Required]
         public string Postal { get; set; }
 
-        [Required]
-        [ForeignKey("CountryID")]
+        [ForeignKey("CountryId")]
         public Country Country { get; set; }
 
-        public int CountryID { get; set; }
+        [Required]
+        public int CountryId { get; set; }
 
     }
 }

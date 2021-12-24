@@ -208,6 +208,12 @@ namespace Invoicing.EntityFramework.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Country_CountryCode",
+                table: "Country",
+                column: "CountryCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customer_Address_Id",
                 table: "Customer",
                 column: "Address_Id");

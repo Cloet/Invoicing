@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { IError } from '../../../common/model/errors.model';
 import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
 import { Router } from '@angular/router';
 import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-country-dialog.component';
@@ -22,12 +21,14 @@ export class CountryViewComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<Country> = new MatTableDataSource(undefined);
   country!: Country;
+  isLoading: boolean = true;
 
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
   constructor(private _countryService: CountryService, private _router : Router, private _dialog : MatDialog) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.refresh();
 
     this._countryService.postError$.subscribe(
@@ -66,6 +67,7 @@ export class CountryViewComponent implements OnInit {
     this._countryService.getCountries$().subscribe()
     this._countryService.getCountriesArray$().subscribe(
       response => {
+        this.isLoading = false;
         this.countries = response;
         this.dataSource = new MatTableDataSource(this.countries);
         setTimeout(() => this.dataSource.sort = this.sort);

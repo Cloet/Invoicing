@@ -17,5 +17,14 @@ namespace Invoicing.EntityFramework.Services
 
         }
 
+        protected override City BeforeInsertUpdate(City entity)
+        {
+            if (entity.Country != null)
+                entity.CountryId = entity.Country.Id;
+            entity.Country = null;
+            return base.BeforeInsertUpdate(entity);
+        }
+
+
     }
 }
