@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { City } from '../../../common/model/city.model';
+import { Country } from '../../../common/model/country.model';
 import { CityService } from '../../../common/service/city.service';
 import { CountryService } from '../../../common/service/country.service';
+import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-add-city',
@@ -15,14 +18,24 @@ export class AddCityComponent implements OnInit {
   @Input() city!: City;
   @Output() updated = new EventEmitter<boolean>();
   cityForm!: FormGroup;
+  hideCountryList: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private _cityService: CityService,
-    private _countryService: CountryService,
+    private _dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit(): void {
+
+    this._cityService.postError$.subscribe(
+      error => {
+        this.showErrorDialog(error);
+      }
+    );
+
+
+    this.hideCountryList = false;
     this.cityForm = this.fb.group({
       name: [
         '',
@@ -37,9 +50,42 @@ export class AddCityComponent implements OnInit {
           Validators.required,
           Validators.minLength(3)
         ]
+      ],
+      countrycode: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ],
+      countryname: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
       ]
     });
+    this.cityForm.setValidators(this.validateCountry());
+
     this.city = new City();
+    this.city.country = new Country();
+    this.cityForm.controls.countrycode.disable();
+    this.cityForm.controls.countryname.disable();
+  }
+
+  validateCountry() : ValidatorFn {
+
+    let valid =  (group: AbstractControl): ValidationErrors | null => {
+      if (this.city.country === null || (this.city.country != null && this.city.country?.id <= 0)) {
+        return { required: true };
+      }
+
+      return null;
+    };
+
+    return valid;
+
   }
 
   onSubmit() {
@@ -47,23 +93,40 @@ export class AddCityComponent implements OnInit {
       this.city.name = this.cityForm.get('name')?.value;
       this.city.postal = this.cityForm.get('postal')?.value;
       this.updated.emit(true);
-      this._countryService.getCountryForId$(1).subscribe(
-        resp => {
-          this.city.country = resp;
-          this.addCity();
-        }
-      );
+      this.addCity();
     }
   }
 
+  onSelect() {
+    this.hideCountryList = true;
+  }
+
+  setCountry(country: Country) {
+    this.city.country = country;
+
+    this.cityForm.controls.countrycode.setValue(country.countryCode);
+    this.cityForm.controls.countryname.setValue(country.name);
+    this.hideCountryList = false;
+  }
+
   addCity() {
-    if (this.cityForm?.valid) {
-      this._cityService.createCity$(this.city).subscribe(response => {
-        if (response.id != null && response.id > 0) {
-          this.router.navigate(['/city']);
-        }
-      });
-    }
+    this._cityService.createCity$(this.city).subscribe(response => {
+      if (response.id != null && response.id > 0) {
+        this.router.navigate(['/city']);
+      }
+    });
+  }
+
+  showErrorDialog(errors: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: 'Error',
+      errors
+    };
+    const dialogRef = this._dialog.open(ErrorDialogComponent, dialogConfig);
+
+    return dialogRef.afterClosed();
   }
 
   getErrorMessage(control: AbstractControl) {

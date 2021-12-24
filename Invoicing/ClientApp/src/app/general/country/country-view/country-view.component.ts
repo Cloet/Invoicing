@@ -64,7 +64,7 @@ export class CountryViewComponent implements OnInit {
   }
 
   refresh() {
-    this._countryService.getCountries$().subscribe()
+    this._countryService.getCountries$().subscribe();
     this._countryService.getCountriesArray$().subscribe(
       response => {
         this.isLoading = false;

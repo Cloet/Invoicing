@@ -111,7 +111,7 @@ namespace Invoicing.EntityFramework.Repositories.Common
                 EntityEntry<T> createdResult = _dbContext.Set<T>().Add(entity);
                 _dbContext.SaveChanges();
 
-                created = createdResult.Entity;
+                created = GetOne(createdResult.Entity.Id);
             }
             catch (DbUpdateException ex)
             {
@@ -141,7 +141,7 @@ namespace Invoicing.EntityFramework.Repositories.Common
                 EntityEntry<T> createdResult = await _dbContext.Set<T>().AddAsync(entity);
                 await _dbContext.SaveChangesAsync();
 
-                created = createdResult.Entity;
+                created = GetOne(createdResult.Entity.Id);
             }
             catch (DbUpdateException ex)
             {

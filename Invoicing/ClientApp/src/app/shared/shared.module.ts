@@ -26,9 +26,12 @@ import { MatSortModule } from '@angular/material/sort'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbModule } from "xng-breadcrumb";
+import { CountrySelectionComponent } from './country-selection/country-selection.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CountrySelectionComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -92,7 +95,8 @@ import { BreadcrumbModule } from "xng-breadcrumb";
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    CountrySelectionComponent
   ],
   providers: [
     

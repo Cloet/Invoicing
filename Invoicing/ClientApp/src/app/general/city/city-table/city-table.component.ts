@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { City } from '../../../common/model/city.model';
 import { CityService } from '../../../common/service/city.service';
 import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
+import { DeleteCityDialogComponent } from '../delete-city-dialog/delete-city-dialog.component';
 
 @Component({
   selector: 'app-city-table',
@@ -70,6 +71,10 @@ export class CityTableComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.cities);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.dataSource.filterPredicate = (data: City, filter: string) => {
+          return (data.country != null && (data.country.name.toLocaleLowerCase().includes(filter) || data.country.countryCode.toLocaleLowerCase().includes(filter)))
+            || data.name.toLocaleLowerCase().includes(filter) || data.postal.toLocaleLowerCase().includes(filter);
+        };
       }
     )
   }
@@ -79,11 +84,21 @@ export class CityTableComponent implements OnInit {
   }
 
   onClickDeleteCity(row: any) {
+    this._cityService.getCityForId$(row.id).subscribe(
+      val => {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        const dialogRef = this._dialog.open(DeleteCityDialogComponent, dialogConfig);
 
-  }
-
-  deleteCity() {
-
+        dialogRef.afterClosed().subscribe(
+          result => {
+            if (result) {
+              this._cityService.deleteCity(val.id).subscribe();
+            }
+          }
+        )
+      }
+    );
   }
 
 }

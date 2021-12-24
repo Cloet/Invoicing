@@ -105,6 +105,9 @@ export class CountryService extends BaseService {
   }
 
   private updateCountry(country: Country) {
+    if (country.id === undefined || country.id <= 0)
+      return;
+
     let arrayCopy = this._countries.value;
     const index = arrayCopy.findIndex(item => item.id === country.id);
     arrayCopy[index] = country;
@@ -112,10 +115,15 @@ export class CountryService extends BaseService {
   }
 
   private removeCountry(id: number) {
+    if (id === undefined || id <= 0)
+      return;
     this._countries.next(this._countries.value.filter(x => x.id !== id));
   }
 
   private addCountry(newCountry: Country) {
+    if (newCountry.id === undefined || newCountry.id <= 0)
+      return;
+
     let arrayCopy = this._countries.value;
     arrayCopy.push(newCountry);
     this._countries.next(arrayCopy);

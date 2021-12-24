@@ -105,6 +105,9 @@ export class CityService extends BaseService {
   }
 
   private updateCity(city: City) {
+    if (city.id === undefined || city.id <= 0)
+      return;
+
     let arrayCopy = this._cities.value;
     const index = arrayCopy.findIndex(item => item.id === city.id);
     arrayCopy[index] = city;
@@ -112,10 +115,16 @@ export class CityService extends BaseService {
   }
 
   private removeCity(id: number) {
+    if (id === undefined || id <= 0)
+      return;
+
     this._cities.next(this._cities.value.filter(x => x.id !== id));
   }
 
   private addCity(newCity: City) {
+    if (newCity.id === undefined || newCity.id <= 0)
+      return;
+
     let arrayCopy = this._cities.value;
     arrayCopy.push(newCity);
     this._cities.next(arrayCopy);
