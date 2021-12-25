@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { BaseComponent } from '../../../common/base.component';
 import { City } from '../../../common/model/city.model';
 import { CityService } from '../../../common/service/city.service';
 import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
@@ -14,7 +15,7 @@ import { DeleteCityDialogComponent } from '../delete-city-dialog/delete-city-dia
   templateUrl: './city-table.component.html',
   styleUrls: ['./city-table.component.scss']
 })
-export class CityTableComponent implements OnInit {
+export class CityTableComponent extends BaseComponent implements OnInit {
 
   public cities: City[] = [];
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -24,36 +25,20 @@ export class CityTableComponent implements OnInit {
 
   isLoading: boolean = true;
 
-  displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'country name', 'action'];
+  displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'country name', 'mainmuncipality', 'action'];
 
   constructor(
     private _cityService: CityService
     ,private _router: Router
-    ,private _dialog: MatDialog) {
+    , private _dialog: MatDialog) {
+    super(_dialog);
   }
 
   ngOnInit(): void {
+    this.subscribeToErrors(this._cityService);
+
     this.isLoading = true;
     this.refresh();
-
-    this._cityService.loadingError$.subscribe(
-      err => {
-        this.showErrorDialog(err);
-      }
-    )
-
-  }
-
-  showErrorDialog(errors: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      title: 'Error',
-      errors
-    };
-    const dialogRef = this._dialog.open(ErrorDialogComponent, dialogConfig);
-
-    return dialogRef.afterClosed();
   }
 
   applyFilter(filterValue: Event) {
@@ -80,7 +65,7 @@ export class CityTableComponent implements OnInit {
   }
 
   onNavigateRow(row: any) {
-    this._router.navigate(['/city/edit-city' + row.id]);
+    this._router.navigate(['/city/edit-city/' + row.id]);
   }
 
   onClickDeleteCity(row: any) {

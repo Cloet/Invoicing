@@ -17,7 +17,7 @@ export class City {
 
     city.id = other.id;
     city.name = other.name;
-    city.mainMunicipality = other.mainmunicipality;
+    city.mainMunicipality = other.mainMunicipality;
     city.postal = other.postal;
     city.country = other.country;
 

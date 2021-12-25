@@ -7,7 +7,7 @@ import { IError } from '../model/errors.model';
 @Injectable({
   providedIn: 'root'
 })
-export class BaseService {
+export abstract class BaseService {
 
   protected serviceUrl = `${environment.backendApi}`;
   public postError$ = new Subject<string>();

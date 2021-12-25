@@ -74,9 +74,9 @@ export class CityService extends BaseService {
   updateCity$(city: City): Observable<City> {
     const headers = this.defaultHeaders();
     const options = { headers };
-    const payload = JSON.stringify(City);
+    const payload = JSON.stringify(city);
 
-    return this.http.put(`${this.serviceUrl}/City/${city.id}`, payload, options)
+    return this.http.put(`${this.serviceUrl}/city/${city.id}`, payload, options)
       .pipe(
         catchError(error => {
           this.putError$.next(error.error.message);

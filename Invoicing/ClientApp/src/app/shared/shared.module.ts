@@ -27,6 +27,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbModule } from "xng-breadcrumb";
 import { CountrySelectionComponent } from './country-selection/country-selection.component';
+import { CountrySelectionService } from './services/country-selection.service';
 
 @NgModule({
   declarations: [
@@ -96,10 +97,10 @@ import { CountrySelectionComponent } from './country-selection/country-selection
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     BreadcrumbModule,
-    CountrySelectionComponent
+    CountrySelectionComponent,
   ],
   providers: [
-    
+    CountrySelectionService
   ]
 })
 export class SharedModule { }

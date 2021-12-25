@@ -30,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\common\service\data.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Invoicing.Base\Invoicing.Base.csproj" />
     <ProjectReference Include="..\Invoicing.EntityFramework\Invoicing.EntityFramework.csproj" />
   </ItemGroup>

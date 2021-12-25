@@ -28,7 +28,6 @@
   word-wrap: break-word;
   white-space: unset;
   flex: 0 0 10%;
-  width: 10%;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -36,13 +35,13 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+  width: 7%;
 }
 
-.mat-column-name {
+.mat-column-city {
   word-wrap: break-word;
   white-space: unset;
   flex: 0 0 50%;
-  width: 50%;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -50,12 +49,62 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+  width: 15%;
+}
+
+.mat-column-postal {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 50%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 12%;
+}
+
+.mat-column-country {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 50%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 7%;
+}
+
+.mat-column-countryname {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 50%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 15%;
 }
 
 .mat-column-action {
   word-wrap: break-word;
   white-space: unset;
   flex: 0 0 20%;
-  width: 20%;
+  width: 15%;
   text-align: right;
+}
+
+.mat-column-mainmuncipality {
+    flex: 0 0 20%;
+    align-content: center;
+    text-align: center;
+    width: 5%
 }

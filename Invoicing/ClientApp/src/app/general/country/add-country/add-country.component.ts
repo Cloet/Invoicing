@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { BaseComponent } from '../../../common/base.component';
 import { Country } from '../../../common/model/country.model';
 import { CountryService } from '../../../common/service/country.service';
 
@@ -9,17 +11,24 @@ import { CountryService } from '../../../common/service/country.service';
   templateUrl: './add-country.component.html',
   styleUrls: ['./add-country.component.scss']
 })
-export class AddCountryComponent implements OnInit {
+export class AddCountryComponent extends BaseComponent implements OnInit {
 
   @Input() country!: Country;
   @Output() updated = new EventEmitter<boolean>();
   countryForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private _countryService: CountryService, private router: Router) {
-    
+  constructor(
+    private fb: FormBuilder,
+    private _countryService: CountryService,
+    private router: Router,
+    private _dialog: MatDialog
+    ) {
+    super(_dialog)
   }
 
   ngOnInit(): void {
+    this.subscribeToErrors(this._countryService);
+
     this.countryForm = this.fb.group({
       code: [
         '',
@@ -60,33 +69,6 @@ export class AddCountryComponent implements OnInit {
         }
       });
     }
-  }
-
-  getErrorMessage(control: AbstractControl) {
-    if (control == null)
-      return ''
-
-    for (const err in control.errors) {
-      if (control.touched && control.errors.hasOwnProperty(err)) {
-        return this.getErrorMessageText(err, control.errors[err]);
-      }
-    }
-    return '';
-  }
-
-  getErrorMessageText(errorName: string, errorvalue?: any) {
-    let dict = new Map<string, string>();
-
-    dict.set('required', "Required");
-    dict.set('minlength', `Min. amount of characters ${errorvalue.requiredLength}`)
-
-    if (errorName === 'pattern' && errorvalue.requiredPattern === "^[A-Z _-]*$") {
-      dict.set('pattern', 'Only CAPITAL letters are allowed.')
-    } else {
-      dict.set('pattern', 'Only letters and digits are allowed')
-    }
-
-    return dict.get(errorName);
   }
 
 }

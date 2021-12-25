@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseComponent } from '../../../common/base.component';
 import { Country } from '../../../common/model/country.model';
 import { CountryService } from '../../../common/service/country.service';
 import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.component';
@@ -13,7 +14,7 @@ import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-co
   templateUrl: './edit-country.component.html',
   styleUrls: ['./edit-country.component.scss']
 })
-export class EditCountryComponent implements OnInit {
+export class EditCountryComponent extends BaseComponent implements OnInit {
 
   @Input() country!: Country;
   @Output() updated = new EventEmitter<boolean>();
@@ -23,9 +24,13 @@ export class EditCountryComponent implements OnInit {
     , private _countryService: CountryService
     , private router: Router
     , private _route: ActivatedRoute
-    , private _dialog: MatDialog) { }
+    , private _dialog: MatDialog) {
+    super(_dialog);
+  }
 
   ngOnInit(): void {
+    this.subscribeToErrors(this._countryService);
+
     this.countryForm = this.fb.group({
       code: [
         '',
@@ -48,7 +53,6 @@ export class EditCountryComponent implements OnInit {
 
 
     let id = this._route.snapshot.paramMap.get('id');
-
     if (id != null) {
       this._countryService.getCountryForId$(Number(id)).subscribe(res => {
         this.country = res;
@@ -67,25 +71,29 @@ export class EditCountryComponent implements OnInit {
   }
 
   deleteCountry() {
-    this._countryService.getCountryForId$(this.country.id).subscribe(val => { this.country = val; });
+    this._countryService.getCountryForId$(this.country.id).subscribe(val => {
+      this.country = val;
 
-    if (this.country.id === undefined || this.country.id <= 0) {
-      this.showErrorDialog("Cannot delete country, entry not found.");
-      this.router.navigate(['/country']);
-      return;
-    }
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    const dialogRef = this._dialog.open(DeleteCountryDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this._countryService.deleteCountry(this.country.id).subscribe(res => {
-          this.router.navigate(['/country']);
-        });
+      if (this.country.id === undefined || this.country.id <= 0) {
+        this.showErrorDialog("Cannot delete country, entry not found.");
+        this.router.navigate(['/country']);
+        return;
       }
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      const dialogRef = this._dialog.open(DeleteCountryDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this._countryService.deleteCountry(this.country.id).subscribe(res => {
+            this.router.navigate(['/country']);
+          });
+        }
+      });
+
     });
+
   }
 
   saveCountry() {
@@ -95,45 +103,6 @@ export class EditCountryComponent implements OnInit {
       }
       );
     }
-  }
-
-  showErrorDialog(errors: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      title: 'Error',
-      errors
-    };
-    const dialogRef = this._dialog.open(ErrorDialogComponent, dialogConfig);
-
-    return dialogRef.afterClosed();
-  }
-
-  getErrorMessage(control: AbstractControl) {
-    if (control == null)
-      return ''
-
-    for (const err in control.errors) {
-      if (control.touched && control.errors.hasOwnProperty(err)) {
-        return this.getErrorMessageText(err, control.errors[err]);
-      }
-    }
-    return '';
-  }
-
-  getErrorMessageText(errorName: string, errorvalue?: any) {
-    let dict = new Map<string, string>();
-
-    dict.set('required', "Required");
-    dict.set('minlength', `Min. amount of characters ${errorvalue.requiredLength}`)
-
-    if (errorName === 'pattern' && errorvalue.requiredPattern === "^[A-Z _-]*$") {
-      dict.set('pattern', 'Only CAPITAL letters are allowed.')
-    } else {
-      dict.set('pattern', 'Only letters and digits are allowed')
-    }
-
-    return dict.get(errorName);
   }
 
 }

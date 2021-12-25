@@ -10,6 +10,7 @@ import { EditCityComponent } from './edit-city/edit-city.component';
 import { CountrySelectionComponent } from '../../shared/country-selection/country-selection.component';
 import { CityDisplayScreenComponent } from './city-display-screen/city-display-screen.component';
 
+
 const cityRoutes: Routes = [
   {
     path: '',
@@ -25,15 +26,9 @@ const cityRoutes: Routes = [
       {
         path: 'add-city',
         component: AddCityComponent,
-        children: [
-          {
-            path: 'select-country',
-            component: CountrySelectionComponent,
-            data: {
-              breadcrumb: 'Select Country'
-            }
-          }
-        ]
+        data: {
+          breadcrumb: 'Create'
+        }
       },
       {
         path: 'edit-city/:id',

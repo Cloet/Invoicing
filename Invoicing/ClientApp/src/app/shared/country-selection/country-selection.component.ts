@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Country } from '../../common/model/country.model';
 import { CountryService } from '../../common/service/country.service';
 import { ErrorDialogComponent } from '../../error-dialog/error-dialog.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-country-selection',
@@ -31,7 +32,7 @@ export class CountrySelectionComponent implements OnInit {
     private _countryService: CountryService,
     private _router: Router,
     private _dialog: MatDialog,
-    private _activatedRoute: ActivatedRoute) { }
+    private _location: Location) { }
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -80,6 +81,10 @@ export class CountrySelectionComponent implements OnInit {
   ondblClick(row: any) {
     this.selection.toggle(row);
     this.onConfirm();
+  }
+
+  onCancel() {
+    this.countryEvent.emit(undefined);
   }
 
   onConfirm() {
