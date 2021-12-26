@@ -2,6 +2,7 @@ import { EventEmitter, Output } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { VAT } from '../../../common/model/vat.model';
@@ -22,7 +23,8 @@ export class AddVatComponent extends BaseComponent implements OnInit {
     private fb: FormBuilder,
     private _vatService: VATService,
     private _router: Router,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
   ) {
     super(_dialog);
   }
@@ -68,6 +70,7 @@ export class AddVatComponent extends BaseComponent implements OnInit {
       this._vatService.createVAT$(this.vat).subscribe(
         response => {
           if (response.id != null && response.id > 0) {
+            this._snackbar.open("VAT has been created.", 'ok', { duration: 2000 });
             this._router.navigate(['/vat']);
           }
         }

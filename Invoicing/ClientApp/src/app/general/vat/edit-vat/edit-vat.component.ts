@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { VAT } from '../../../common/model/vat.model';
@@ -23,7 +24,8 @@ export class EditVatComponent extends BaseComponent implements OnInit {
     private _vatService: VATService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
   ) {
     super(_dialog);
   }
@@ -79,7 +81,9 @@ export class EditVatComponent extends BaseComponent implements OnInit {
 
   saveVAT() {
     if (this.vatForm?.valid) {
-      this._vatService.updateVAT$(this.vat).subscribe();
+      this._vatService.updateVAT$(this.vat).subscribe(res => {
+        this._snackbar.open("VAT has been saved", 'ok', { duration: 2000 });
+      });
     }
   }
 
@@ -100,6 +104,7 @@ export class EditVatComponent extends BaseComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this._vatService.deleteVAT(this.vat.id).subscribe(res => {
+            this._snackbar.open("VAT has been deleted", 'ok', { duration: 2000 });
             this._router.navigate(['/vat']);
           })
         }

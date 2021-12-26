@@ -9,6 +9,7 @@ import { ErrorDialogComponent } from '../../../error-dialog/error-dialog.compone
 import { Router } from '@angular/router';
 import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-country-dialog.component';
 import { BaseComponent } from '../../../common/base.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-country-view',
@@ -29,7 +30,9 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   constructor(
     private _countryService: CountryService,
     private _router: Router,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
+  ) {
     super(_dialog);
   }
 
@@ -78,10 +81,10 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
     });
   }
 
-  deleteCountry(): boolean {
-    let deleted = false;
-    this._countryService.deleteCountry(this.country.id).subscribe(chk => { deleted = true });
-    return deleted;
+  deleteCountry() {
+    this._countryService.deleteCountry(this.country.id).subscribe(chk => {
+      this._snackbar.open("Country has been deleted.", 'ok', { duration: 2000 });
+    });
   }
 
 }

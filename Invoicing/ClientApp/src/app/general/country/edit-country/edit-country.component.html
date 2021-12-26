@@ -7,7 +7,7 @@
         <mat-placeholder class="placeholder">code</mat-placeholder>
       </mat-form-field>
       <mat-form-field class="country-name">
-        <input id="name" matInput aria-label="Country" type="text" formControlName="name" required />
+        <input id="name" matInput aria-label="Country" autofocus type="text" formControlName="name" required />
         <mat-placeholder class="placeholder">name</mat-placeholder>
         <mat-error>{{ getErrorMessage(countryForm?.get('name')) }}</mat-error>
       </mat-form-field>

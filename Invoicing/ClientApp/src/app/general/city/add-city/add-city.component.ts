@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { City } from '../../../common/model/city.model';
@@ -24,6 +25,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     private fb: FormBuilder,
     private _cityService: CityService,
     private _dialog: MatDialog,
+    private _snackbar: MatSnackBar,
     private router: Router) {
     super(_dialog);
   }
@@ -114,6 +116,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     this._cityService.createCity$(this.city).subscribe(response => {
       if (response.id != null && response.id > 0) {
         this.router.navigate(['/city']);
+        this._snackbar.open("City has been created.", 'ok', { duration: 2000 });
       }
     });
   }

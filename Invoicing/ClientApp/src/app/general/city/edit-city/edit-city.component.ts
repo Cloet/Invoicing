@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { count } from 'rxjs/operators';
 import { BaseComponent } from '../../../common/base.component';
@@ -26,7 +27,8 @@ export class EditCityComponent extends BaseComponent implements OnInit {
     private _cityService: CityService,
     private _dialog: MatDialog,
     private router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _snackbar: MatSnackBar
   ) {
     super(_dialog);
   }
@@ -116,6 +118,7 @@ export class EditCityComponent extends BaseComponent implements OnInit {
       response => {
         if (response.id != null && response.id > 0) {
           this.router.navigate(['/city']);
+          this._snackbar.open("City has been saved", 'ok', { duration: 2000 });
         }
       }
     )
@@ -153,8 +156,11 @@ export class EditCityComponent extends BaseComponent implements OnInit {
         dialogRef.afterClosed().subscribe(
           result => {
             if (result) {
-              this._cityService.deleteCity(val.id).subscribe();
-              this.router.navigate(['/city']);
+              this._cityService.deleteCity(val.id).subscribe(res => {
+                this._snackbar.open("City has been deleted", 'ok', { duration: 2000 });
+                this.router.navigate(['/city']);
+              });
+
             }
           }
         )

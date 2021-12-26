@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { Country } from '../../../common/model/country.model';
@@ -21,7 +22,8 @@ export class AddCountryComponent extends BaseComponent implements OnInit {
     private fb: FormBuilder,
     private _countryService: CountryService,
     private router: Router,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
     ) {
     super(_dialog)
   }
@@ -63,9 +65,8 @@ export class AddCountryComponent extends BaseComponent implements OnInit {
     if (this.countryForm?.valid) {
       this._countryService.createCountry$(this.country).subscribe(response => {
         if (response.id != null && response.id > 0) {
-          this.router.navigate(
-            ['/country']
-          );
+          this._snackbar.open("Country has been created", 'ok', { duration: 2000 });
+          this.router.navigate(['/country']);
         }
       });
     }

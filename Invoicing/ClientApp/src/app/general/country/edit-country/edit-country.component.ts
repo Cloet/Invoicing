@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { Country } from '../../../common/model/country.model';
@@ -24,7 +25,9 @@ export class EditCountryComponent extends BaseComponent implements OnInit {
     , private _countryService: CountryService
     , private router: Router
     , private _route: ActivatedRoute
-    , private _dialog: MatDialog) {
+    , private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
+  ) {
     super(_dialog);
   }
 
@@ -87,6 +90,7 @@ export class EditCountryComponent extends BaseComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this._countryService.deleteCountry(this.country.id).subscribe(res => {
+            this._snackbar.open("Country has been deleted.", 'ok', { duration: 2000 });
             this.router.navigate(['/country']);
           });
         }
@@ -99,7 +103,7 @@ export class EditCountryComponent extends BaseComponent implements OnInit {
   saveCountry() {
     if (this.countryForm?.valid) {
       this._countryService.updateCountry$(this.country).subscribe(response => {
-          
+        this._snackbar.open("Country has been saved", 'ok', { duration: 2000 });
       }
       );
     }

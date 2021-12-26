@@ -2,6 +2,7 @@ import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -29,7 +30,8 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   constructor(
     private _vatService: VATService,
     private _router: Router,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _snackbar: MatSnackBar
   ) {
     super(_dialog);
   }
@@ -72,7 +74,9 @@ export class VatTableComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._vatService.deleteVAT(this.vat.id).subscribe();
+        this._vatService.deleteVAT(this.vat.id).subscribe(res => {
+          this._snackbar.open("VAT has been deleted", 'ok', { duration: 2000 });
+        });
       }
     });
   }

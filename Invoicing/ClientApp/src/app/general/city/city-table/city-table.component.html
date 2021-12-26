@@ -31,7 +31,10 @@
     </ng-container>
     <ng-container matColumnDef="mainmuncipality">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Mainmun.</th>
-      <td mat-cell *matCellDef="let row"><mat-checkbox [checked]="row.mainMunicipality"></mat-checkbox> </td>
+      <td mat-cell *matCellDef="let row">
+          <mat-checkbox disabled [checked]="row.mainMunicipality">
+          </mat-checkbox>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="action">
