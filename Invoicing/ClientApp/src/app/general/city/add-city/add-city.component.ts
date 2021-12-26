@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { City } from '../../../common/model/city.model';
 import { Country } from '../../../common/model/country.model';
+import { BaseService } from '../../../common/service/base.service';
 import { CityService } from '../../../common/service/city.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.hideCountryList = true;
-    this.subscribeToErrors(this._cityService);
+    this.subscribeToErrors<City>(this._cityService);
 
     this.cityForm = this.fb.group({
       name: [

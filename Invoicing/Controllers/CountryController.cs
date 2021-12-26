@@ -27,7 +27,7 @@ namespace Invoicing.Controllers
         public async Task<IActionResult> GetAllCountries()
         {
             try {
-                var countries = (await _countryService.GetAllAsync()).ToList();
+                var countries = await _countryService.GetAllAsync();
 
                 if (!countries.Any())
                     return NoContent();
@@ -37,7 +37,7 @@ namespace Invoicing.Controllers
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -48,14 +48,14 @@ namespace Invoicing.Controllers
                 var country = await _countryService.GetOneAsync(id);
 
                 if (country == null)
-                    return NotFound(new ValidationError("", $"Country with Id = {id} not found."));
+                    return NotFound(new ValidationError($"Country with Id = {id} not found."));
 
                 var dto = _mapper.Map<CountryDTO>(country);
 
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("",ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
             
         }
@@ -70,10 +70,11 @@ namespace Invoicing.Controllers
 
                 if (c.Count() > 0)
                 {
-                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError("CountryCode", $"A country with code {country.CountryCode} already exists."));
+                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError($"A country with code {country.CountryCode} already exists."));
                 }
 
-                country = await _countryService.CreateOneAsync(country);
+                await _countryService.CreateOneAsync(country);
+                await _countryService.SaveAsync();
 
                 var dto = _mapper.Map<CountryDTO>(country);
 
@@ -81,7 +82,7 @@ namespace Invoicing.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -97,15 +98,19 @@ namespace Invoicing.Controllers
                 var c = await _countryService.GetOneAsync(country.Id);
 
                 if (c == null)
-                    return NotFound(new ValidationError("", $"No country was found with countrycode {country.CountryCode}"));
+                    return NotFound(new ValidationError($"No country was found with countrycode {country.CountryCode}"));
 
-                country = await _countryService.UpdateOneAsync(country);
+                await _countryService.UpdateOneAsync(country);
+                await _countryService.SaveAsync();
+
+                country = await _countryService.GetOneAsync(country.Id);
+
                 var dto = _mapper.Map<CountryDTO>(country);
 
                 return CreatedAtRoute("country", new { id = country.Id }, dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -118,14 +123,14 @@ namespace Invoicing.Controllers
 
                 if (country == null)
                 {
-                    return NotFound(new ValidationError("", $"Country with Id = {id} not found."));
+                    return NotFound(new ValidationError($"Country with Id = {id} not found."));
                 }
 
                 await _countryService.DeleteOneAsync(id);
                 return NoContent();
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 

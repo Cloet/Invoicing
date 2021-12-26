@@ -1,6 +1,7 @@
 import { AbstractControl } from "@angular/forms";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ErrorDialogComponent } from "../error-dialog/error-dialog.component";
+import { BaseModel } from "./model/base.model";
 import { BaseService } from "./service/base.service";
 
 export abstract class BaseComponent {
@@ -50,7 +51,7 @@ export abstract class BaseComponent {
     return dict.get(errorName);
   }
 
-  subscribeToErrors(service: BaseService) {
+  subscribeToErrors<T extends BaseModel>(service: BaseService<T>) {
 
     service.loadingError$.subscribe(
       err => {
@@ -65,6 +66,12 @@ export abstract class BaseComponent {
     )
 
     service.postError$.subscribe(
+      err => {
+        this.showErrorDialog(err);
+      }
+    )
+
+    service.deleteError$.subscribe(
       err => {
         this.showErrorDialog(err);
       }

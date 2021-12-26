@@ -35,7 +35,7 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToErrors(this._cityService);
+    this.subscribeToErrors<City>(this._cityService);
 
     this.isLoading = true;
     this.refresh();

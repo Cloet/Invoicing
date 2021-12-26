@@ -29,7 +29,7 @@ export class EditCountryComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToErrors(this._countryService);
+    this.subscribeToErrors<Country>(this._countryService);
 
     this.countryForm = this.fb.group({
       code: [

@@ -11,6 +11,7 @@ namespace Invoicing.Helpers
             base.Load(builder);
             builder.RegisterType<CountryRepository>().As<ICountryRepository>();
             builder.RegisterType<CityRepository>().As<ICityRepository>();
+            builder.RegisterType<ArticleRepository>().As<IArticleRepository>(); 
         }
 
     }

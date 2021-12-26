@@ -30,12 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\common\model\article.model.ts" />
+    <None Remove="ClientApp\src\app\common\model\vat.model.ts" />
     <None Remove="ClientApp\src\app\common\service\data.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Invoicing.Base\Invoicing.Base.csproj" />
     <ProjectReference Include="..\Invoicing.EntityFramework\Invoicing.EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\common\model\article.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\common\model\vat.model.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

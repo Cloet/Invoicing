@@ -1,11 +1,12 @@
+import { BaseModel } from "./base.model";
 
-export class Country {
+export class Country extends BaseModel {
 
-  private _id: number = 0;
   private _name: string = '';
   private _countryCode: string = '';
     
   constructor() {
+    super();
   }
 
   static fromJson(other: any): Country {
@@ -24,12 +25,6 @@ export class Country {
     }
   }
   
-  public get id(): number {
-    return this._id;
-  }
-  public set id(value: number) {
-    this._id = value;
-  }
 
   public get name(): string {
     return this._name;

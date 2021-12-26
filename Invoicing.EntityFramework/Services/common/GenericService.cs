@@ -15,7 +15,7 @@ namespace Invoicing.EntityFramework.Services.common
 
         protected readonly IGenericDataRepository<T> _repository;
         protected readonly ICLogger _servicelogger;
-
+        protected bool _disposed = false;
         public GenericService(IGenericDataRepository<T> repository)
         {
             _repository = repository;
@@ -35,55 +35,55 @@ namespace Invoicing.EntityFramework.Services.common
             }
         }
 
-        public virtual bool CreateMany(IEnumerable<T> entities)
+        public virtual void CreateMany(IEnumerable<T> entities)
         {
             entities = BeforeInsertUpdateMany(entities);
-            return _repository.CreateMany(entities);
+            _repository.CreateMany(entities);
         }
-        public virtual async Task<bool> CreateManyAsync(IEnumerable<T> entities)
+        public virtual async Task CreateManyAsync(IEnumerable<T> entities)
         {
             entities = BeforeInsertUpdateMany(entities);
-            return await _repository.CreateManyAsync(entities);
+            await _repository.CreateManyAsync(entities);
         }
 
-        public virtual T CreateOne(T entity)
+        public virtual void CreateOne(T entity)
         {
             entity = BeforeInsertUpdate(entity);
-            return _repository.CreateOne(entity);
+            _repository.CreateOne(entity);
         }
-        public virtual async Task<T> CreateOneAsync(T entity)
+        public virtual async Task CreateOneAsync(T entity)
         {
             entity = BeforeInsertUpdate(entity);
-            return await _repository.CreateOneAsync(entity);
+            await _repository.CreateOneAsync(entity);
         }
 
-        public virtual bool DeleteMany(IEnumerable<T> entities)
+        public virtual void DeleteMany(IEnumerable<T> entities)
         {
-            return _repository.DeleteMany(entities);
+            _repository.DeleteMany(entities);
         }
-        public virtual bool DeleteMany(Expression<Func<T, bool>> filter)
+        public virtual void DeleteMany(Expression<Func<T, bool>> filter)
         {
-            return _repository.DeleteMany(filter);
+            _repository.DeleteMany(filter);
         }
-        public virtual async Task<bool> DeleteManyAsync(IEnumerable<T> entities)
+        public virtual async Task DeleteManyAsync(IEnumerable<T> entities)
         {
-            return await _repository.DeleteManyAsync(entities);
+            await _repository.DeleteManyAsync(entities);
         }
-        public virtual async Task<bool> DeleteManyAsync(Expression<Func<T, bool>> filter)
+        public virtual async Task DeleteManyAsync(Expression<Func<T, bool>> filter)
         {
-            return await DeleteManyAsync(await FilterAsync(filter));
-        }
-
-        public virtual bool DeleteOne(T entity) => _repository.DeleteOne(entity.Id);
-        public virtual bool DeleteOne(int id)
-        {
-            return _repository.DeleteOne(id);
+            await DeleteManyAsync(await FilterAsync(filter));
         }
 
-        public virtual async Task<bool> DeleteOneAsync(T entity) => await _repository.DeleteOneAsync(entity.Id);
-        public virtual async Task<bool> DeleteOneAsync(int id)
+        public virtual void DeleteOne(T entity) => _repository.DeleteOne(entity.Id);
+        public virtual void DeleteOne(int id)
         {
-            return await _repository.DeleteOneAsync(id);
+            _repository.DeleteOne(id);
+        }
+
+        public virtual async Task DeleteOneAsync(T entity) => await _repository.DeleteOneAsync(entity.Id);
+        public virtual async Task DeleteOneAsync(int id)
+        {
+            await _repository.DeleteOneAsync(id);
         }
 
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1)
@@ -133,15 +133,15 @@ namespace Invoicing.EntityFramework.Services.common
             return await _repository.GetOneAsync(id);
         }
 
-        public virtual T UpdateOne(T entity)
+        public virtual void UpdateOne(T entity)
         {
             entity = BeforeInsertUpdate(entity);
-            return _repository.UpdateOne(entity);
+            _repository.UpdateOne(entity);
         }
-        public virtual async Task<T> UpdateOneAsync(T entity)
+        public virtual async Task UpdateOneAsync(T entity)
         {
             entity = BeforeInsertUpdate(entity);
-            return await _repository.UpdateOneAsync(entity);
+            await _repository.UpdateOneAsync(entity);
         }
 
         public virtual T FirstRecord()
@@ -159,7 +159,6 @@ namespace Invoicing.EntityFramework.Services.common
         {
             return _repository.Filter(null, x => x.OrderByDescending(x => x.Id), 0, 1).FirstOrDefault();
         }
-
         public virtual async Task<T> LastRecordAsync()
         {
             var items = await _repository.FilterAsync(null, x => x.OrderByDescending(x => x.Id), 0, 1);
@@ -200,7 +199,6 @@ namespace Invoicing.EntityFramework.Services.common
 
             return prev;
         }
-
         public virtual async Task<T> PreviousRecordAsync(T current)
         {
             var prev = (await FilterAsync(x => x.Id < current.Id, x => x.OrderByDescending(x => x.Id), 0, 1)).FirstOrDefault();
@@ -216,12 +214,35 @@ namespace Invoicing.EntityFramework.Services.common
             var item = GetOne(id);
             return item != null;
         }
-
         public virtual async Task<bool> RecordExistsAsync(int id)
         {
             var item = await GetOneAsync(id);
             return item != null;
         }
+
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                _repository.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual void Save() => _repository.Save();
+
+        public virtual async Task SaveAsync() => await _repository.SaveAsync();
 
     }
 }

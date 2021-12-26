@@ -38,7 +38,7 @@ namespace Invoicing.Controllers
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -50,14 +50,14 @@ namespace Invoicing.Controllers
                 var city = await _cityService.GetOneAsync(id);
 
                 if (city == null)
-                    return NotFound(new ValidationError("", $"City with Id = {id} not found."));
+                    return NotFound(new ValidationError($"City with Id = {id} not found."));
 
                 var dto = _mapper.Map<CityDTO>(city);
 
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -72,15 +72,19 @@ namespace Invoicing.Controllers
                 var c = await _cityService.FilterAsync(x => x.Id == city.Id || (x.Name == city.Name && x.Postal == city.Postal && x.Country == city.Country),null, 1);
 
                 if (c.Count() > 0)
-                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError("", $"A city with the same name and postal code already exists for this country."));
+                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ValidationError($"A city with the same name and postal code already exists for this country."));
                 
-                city = await _cityService.CreateOneAsync(city);
+                await _cityService.CreateOneAsync(city);
+                await _cityService.SaveAsync();
+
+                city = await _cityService.GetOneAsync(city.Id);
+
                 var dto = _mapper.Map<CityDTO>(city);
 
                 return CreatedAtRoute("city", new { id = city.Id }, dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -96,15 +100,19 @@ namespace Invoicing.Controllers
                 var c = await _cityService.GetOneAsync(city.Id);
 
                 if (c == null)
-                    return NotFound(new ValidationError("", $"No city was found with id = {id}."));
+                    return NotFound(new ValidationError($"No city was found with id = {id}."));
 
-                city = await _cityService.UpdateOneAsync(city);
+                await _cityService.UpdateOneAsync(city);
+                await _cityService.SaveAsync();
+
+                city = await _cityService.GetOneAsync(city.Id);
+
                 var dto = _mapper.Map<CityDTO>(city);
 
                 return CreatedAtRoute("city", new { id = city.Id }, dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 
@@ -116,13 +124,13 @@ namespace Invoicing.Controllers
                 var city = await _cityService.GetOneAsync(id);
 
                 if (city == null)
-                    return NotFound(new ValidationError("", $"City with Id = {id} not found."));
+                    return NotFound(new ValidationError($"City with Id = {id} not found."));
 
                 await _cityService.DeleteOneAsync(id);
                 return NoContent();
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError("", ex.Message));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
             }
         }
 

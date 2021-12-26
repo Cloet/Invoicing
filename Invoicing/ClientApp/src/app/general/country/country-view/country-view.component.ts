@@ -34,7 +34,7 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToErrors(this._countryService);
+    this.subscribeToErrors<Country>(this._countryService);
 
     this.isLoading = true;
     this.refresh();

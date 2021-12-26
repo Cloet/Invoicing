@@ -12,26 +12,31 @@ namespace Invoicing.EntityFramework.Repositories.Common
     {
         public TEntity Detach<TEntity>(TEntity entity);
 
-        public bool CreateMany(IEnumerable<T> entities);
-        public Task<bool> CreateManyAsync(IEnumerable<T> entities);
+        public void CreateMany(IEnumerable<T> entities);
+        public Task CreateManyAsync(IEnumerable<T> entities);
 
-        public T CreateOne(T entity);
-        public Task<T> CreateOneAsync(T entity);
+        public void CreateOne(T entity);
+        public Task CreateOneAsync(T entity);
 
-        public bool DeleteMany(IEnumerable<T> entities);
-        public bool DeleteMany(Expression<Func<T, bool>> filter);
+        public void DeleteMany(IEnumerable<T> entities);
+        public void DeleteMany(Expression<Func<T, bool>> filter);
 
-        public Task<bool> DeleteManyAsync(IEnumerable<T> entities);
-        public Task<bool> DeleteManyAsync(Expression<Func<T, bool>> filter);
+        public Task DeleteManyAsync(IEnumerable<T> entities);
+        public Task DeleteManyAsync(Expression<Func<T, bool>> filter);
 
-        public bool DeleteOne(T entity);
-        public bool DeleteOne(int id);
+        public void DeleteOne(T entity);
+        public void DeleteOne(int id);
 
-        public Task<bool> DeleteOneAsync(T entity);
-        public Task<bool> DeleteOneAsync(int id);
+        public Task DeleteOneAsync(T entity);
+        public Task DeleteOneAsync(int id);
 
-        public T UpdateOne(T entity);
-        public Task<T> UpdateOneAsync(T entity);
+        public void UpdateOne(T entity);
+        public Task UpdateOneAsync(T entity);
+
+        public void Save();
+
+        public Task SaveAsync();
+
 
     }
 }

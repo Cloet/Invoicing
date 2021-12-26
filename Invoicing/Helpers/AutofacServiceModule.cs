@@ -12,6 +12,7 @@ namespace Invoicing.Helpers
             base.Load(builder);
             builder.RegisterType<CountryService>().As<ICountryService>();
             builder.RegisterType<CityService>().As<ICityService>();
+            builder.RegisterType<ArticleService>().As<IArticleService>();
         }
 
     }

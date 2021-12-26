@@ -10,7 +10,7 @@ import { BaseService } from './base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CityService extends BaseService {
+export class CityService extends BaseService<City> {
 
   public _cities = new BehaviorSubject<City[]>([]);
 
@@ -27,7 +27,7 @@ export class CityService extends BaseService {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error);
+            this.loadingError$.next(error.error.message);
             this.handleError(error);
             return of(error);
           }),
@@ -66,7 +66,7 @@ export class CityService extends BaseService {
           this.handleError(error);
           return of(error);
         }),
-        tap(x => this.addCity(City.fromJson(x))),
+        tap(x => this.addItemToArray(City.fromJson(x), this._cities)),
         map(City.fromJson)
       );
   }
@@ -83,7 +83,7 @@ export class CityService extends BaseService {
           this.handleError(error);
           return of(error);
         }),
-        tap(x => this.updateCity(City.fromJson(x))),
+        tap(x => this.updateItemInArray(City.fromJson(x),this._cities)),
         map(City.fromJson)
       );
 
@@ -96,38 +96,12 @@ export class CityService extends BaseService {
     return this.http.delete(`${this.serviceUrl}/city/${id}`, options)
       .pipe(
         catchError(error => {
-          this.loadingError$.next(error.error.message);
+          this.deleteError$.next(error.error.message);
           this.handleError(error);
           return of(error);
         }),
-        tap((res => this.removeCity(id)))
+        tap((res => this.removeFromArray(id, this._cities)))
       );
-  }
-
-  private updateCity(city: City) {
-    if (city.id === undefined || city.id <= 0)
-      return;
-
-    let arrayCopy = this._cities.value;
-    const index = arrayCopy.findIndex(item => item.id === city.id);
-    arrayCopy[index] = city;
-    this._cities.next(arrayCopy);
-  }
-
-  private removeCity(id: number) {
-    if (id === undefined || id <= 0)
-      return;
-
-    this._cities.next(this._cities.value.filter(x => x.id !== id));
-  }
-
-  private addCity(newCity: City) {
-    if (newCity.id === undefined || newCity.id <= 0)
-      return;
-
-    let arrayCopy = this._cities.value;
-    arrayCopy.push(newCity);
-    this._cities.next(arrayCopy);
   }
 
 }

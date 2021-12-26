@@ -10,16 +10,16 @@ import { BaseService } from './base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CountryService extends BaseService {
+export class CountryService extends BaseService<Country> {
 
-  public _countries = new BehaviorSubject<Country[]>([]);
+  private _countries = new BehaviorSubject<Country[]>([]);
 
   // Gets updated when items are created / updated.
   getCountriesArray$(): Observable<Country[]> {
     return this._countries.asObservable();
   }
 
-  getCountryForId$(countryId: number): Observable<Country> {
+  public getCountryForId$(countryId: number): Observable<Country> {
     const headers = this.defaultHeaders();
     const options = { headers };
 
@@ -35,7 +35,7 @@ export class CountryService extends BaseService {
       );
   }
 
-  getCountries$(): Observable<Country[]> {
+  public getCountries$(): Observable<Country[]> {
     const headers = this.defaultHeaders();
     const options = { headers };
 
@@ -54,7 +54,7 @@ export class CountryService extends BaseService {
     return this._countries;
   }
 
-  createCountry$(country: Country): Observable<Country> {
+  public createCountry$(country: Country): Observable<Country> {
     const headers = this.defaultHeaders();
     const options = { headers };
     const payload = JSON.stringify(country);
@@ -66,12 +66,12 @@ export class CountryService extends BaseService {
           this.handleError(error);
           return of(error);
         }),
-        tap(x => this.addCountry(Country.fromJson(x))),
+        tap(x => this.addItemToArray(Country.fromJson(x), this._countries)),
         map(Country.fromJson)
       );
   }
 
-  updateCountry$(country: Country): Observable<Country> {
+  public updateCountry$(country: Country): Observable<Country> {
     const headers = this.defaultHeaders();
     const options = { headers };
     const payload = JSON.stringify(country);
@@ -83,50 +83,25 @@ export class CountryService extends BaseService {
           this.handleError(error);
           return of(error);
         }),
-        tap(x => this.updateCountry(Country.fromJson(x))),
+        tap(x => this.updateItemInArray(Country.fromJson(x), this._countries)),
         map(Country.fromJson)
       );
 
   }
     
-  deleteCountry(id: number) {
+  public deleteCountry(id: number) {
     const headers = this.defaultHeaders();
     const options = { headers };
 
     return this.http.delete(`${this.serviceUrl}/country/${id}`, options)
       .pipe(
         catchError(error => {
-          this.loadingError$.next(error.error.message);
+          this.deleteError$.next(error.error.message);
           this.handleError(error);
           return of(error);
         }),
-        tap((res => this.removeCountry(id)))
+        tap((res => this.removeFromArray(id, this._countries)))
       );
-  }
-
-  private updateCountry(country: Country) {
-    if (country.id === undefined || country.id <= 0)
-      return;
-
-    let arrayCopy = this._countries.value;
-    const index = arrayCopy.findIndex(item => item.id === country.id);
-    arrayCopy[index] = country;
-    this._countries.next(arrayCopy);
-  }
-
-  private removeCountry(id: number) {
-    if (id === undefined || id <= 0)
-      return;
-    this._countries.next(this._countries.value.filter(x => x.id !== id));
-  }
-
-  private addCountry(newCountry: Country) {
-    if (newCountry.id === undefined || newCountry.id <= 0)
-      return;
-
-    let arrayCopy = this._countries.value;
-    arrayCopy.push(newCountry);
-    this._countries.next(arrayCopy);
   }
 
 }

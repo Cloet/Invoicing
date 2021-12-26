@@ -1,8 +1,8 @@
+import { BaseModel } from "./base.model";
 import { Country } from "./country.model";
 
-export class City {
+export class City extends BaseModel {
 
-  private _id: number = 0;
   private _name: string = '';
   private _mainMunicipality: boolean = false;
   private _postal: string = '';
@@ -10,6 +10,7 @@ export class City {
     
 
   constructor() {
+    super();
   }
 
   static fromJson(other: any): City {
@@ -34,12 +35,6 @@ export class City {
     }
   }
 
-  public get id(): number {
-    return this._id;
-  }
-  public set id(value: number) {
-    this._id = value;
-  }
 
   public get name(): string {
     return this._name;

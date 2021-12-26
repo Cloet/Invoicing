@@ -14,6 +14,7 @@ namespace Invoicing.EntityFramework.Repositories.Common
 
         protected readonly ICLogger _datarepositoryLogger = null;
         protected readonly TContext _dbContext;
+        protected bool _disposed = false;
 
         protected DataRepoOptions _options { get; set; } = null;
         public bool AsNoTracking => _options.AsNoTracking;
@@ -120,7 +121,27 @@ namespace Invoicing.EntityFramework.Repositories.Common
         {
             return await Task.Run(() => GetOne(id));
         }
+
         #endregion
+
+
+        protected virtual void Dispose(bool disposing) {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                _dbContext.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
     }
 }

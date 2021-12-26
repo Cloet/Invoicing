@@ -32,7 +32,7 @@ export class EditCityComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToErrors(this._cityService);
+    this.subscribeToErrors<City>(this._cityService);
 
     this.hideCountryList = false;
     this.cityForm = this.fb.group({

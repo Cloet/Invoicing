@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Invoicing.EntityFramework.Repositories.Common
 {
-    public interface IReadOnlyDataRepository<T> where T : SQLModelBase<T>
+    public interface IReadOnlyDataRepository<T> : IDisposable where T : SQLModelBase<T>
     {
         public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int take = -1, int skip = -1);
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int take = -1, int skip = -1);
