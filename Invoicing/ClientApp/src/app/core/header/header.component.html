@@ -1,13 +1,12 @@
 <mat-toolbar color="primary" class="white-header">
   <span>Invoicing</span>
   <span class="toolbar-spacing"></span>
+  <button mat-button>Artikel</button>
   <button mat-button [matMenuTriggerFor]="general">General</button>
   <mat-menu #general="matMenu">
     <button mat-menu-item [routerLink]="['/country']">Country</button>
-    <mat-menu #country="matMenu">
-      <button mat-menu-item>Create country</button>
-    </mat-menu>
     <button mat-menu-item [routerLink]="['/city']">City</button>
+    <button mat-menu-item [routerLink]="['/vat']">VAT</button>
   </mat-menu>
 </mat-toolbar>
 <mat-toolbar class="toolbar-breadcrumb">

@@ -16,6 +16,7 @@ const appRoutes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'country', loadChildren: () => import('./general/country/country.module').then(m => m.CountryModule) },
   { path: 'city', loadChildren: () => import('./general/city/city.module').then(m => m.CityModule) },
+  { path: 'vat', loadChildren: () => import('./general/vat/vat.module').then(m => m.VatModule) },
   { path: 'article', loadChildren: () => import('./article/article.module').then(m => m.ArticleModule)},
   { path: 'not-found', component: PageNotFoundComponent},
   { path: '**', component: PageNotFoundComponent}

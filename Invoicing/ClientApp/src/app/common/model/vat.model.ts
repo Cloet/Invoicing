@@ -4,6 +4,7 @@ export class VAT extends BaseModel {
 
   private _code: string = '';
   private _percentage: number = 0;
+  private _description: string = '';
 
   constructor() {
     super();
@@ -14,6 +15,7 @@ export class VAT extends BaseModel {
     vat.id = other.id;
     vat.code = other.code;
     vat.percentage = other.percentage;
+    vat.description = other.description;
     return vat;
   }
 
@@ -21,7 +23,8 @@ export class VAT extends BaseModel {
     return {
       id: this._id,
       code: this._code,
-      percentage: this._percentage
+      percentage: this._percentage,
+      description: this._description
     }
   }
 
@@ -31,6 +34,14 @@ export class VAT extends BaseModel {
 
   public set code(value: string) {
     this._code = value;
+  }
+
+  public get description(): string {
+    return this._description;
+  }
+
+  public set description(value: string) {
+    this._description = value;
   }
 
   public get percentage(): number {

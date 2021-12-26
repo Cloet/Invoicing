@@ -127,6 +127,8 @@ namespace Invoicing.Controllers
                     return NotFound(new ValidationError($"City with Id = {id} not found."));
 
                 await _cityService.DeleteOneAsync(id);
+                await _cityService.SaveAsync();
+
                 return NoContent();
             } catch (Exception ex)
             {

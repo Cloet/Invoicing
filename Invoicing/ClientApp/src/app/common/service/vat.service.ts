@@ -55,7 +55,7 @@ export class VATService extends BaseService<VAT> {
     const options = { headers };
     const payload = JSON.stringify(vat);
 
-    return this.http.post<VAT>(`{this.serviceUrl}/vat/`, payload, options)
+    return this.http.post<VAT>(`${this.serviceUrl}/vat/`, payload, options)
       .pipe(
         catchError(error => {
           this.postError$.next(error.error.message);
@@ -94,8 +94,9 @@ export class VATService extends BaseService<VAT> {
           this.deleteError$.next(error.error.message);
           this.handleError(error);
           return of(error);
-        })
-      )
+        }),
+        tap((res => this.removeFromArray(id, this._vat)))
+      );
   }
 
 }

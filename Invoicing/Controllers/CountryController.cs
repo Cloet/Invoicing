@@ -127,6 +127,8 @@ namespace Invoicing.Controllers
                 }
 
                 await _countryService.DeleteOneAsync(id);
+                await _countryService.SaveAsync();
+
                 return NoContent();
             } catch (Exception ex)
             {

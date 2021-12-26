@@ -126,6 +126,8 @@ namespace Invoicing.Controllers
                     return NotFound(ValidationError.CreateError($"Article with Id = {id} not found."));
 
                 await _articleService.DeleteOneAsync(id);
+                await _articleService.SaveAsync();
+
                 return NoContent();
             } catch (Exception ex)
             {

@@ -20,6 +20,7 @@ var VAT = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this._code = '';
         _this._percentage = 0;
+        _this._description = '';
         return _this;
     }
     VAT.fromJson = function (other) {
@@ -27,13 +28,15 @@ var VAT = /** @class */ (function (_super) {
         vat.id = other.id;
         vat.code = other.code;
         vat.percentage = other.percentage;
+        vat.description = other.description;
         return vat;
     };
     VAT.prototype.toJSON = function () {
         return {
             id: this._id,
             code: this._code,
-            percentage: this._percentage
+            percentage: this._percentage,
+            description: this._description
         };
     };
     Object.defineProperty(VAT.prototype, "code", {
@@ -42,6 +45,16 @@ var VAT = /** @class */ (function (_super) {
         },
         set: function (value) {
             this._code = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VAT.prototype, "description", {
+        get: function () {
+            return this._description;
+        },
+        set: function (value) {
+            this._description = value;
         },
         enumerable: true,
         configurable: true

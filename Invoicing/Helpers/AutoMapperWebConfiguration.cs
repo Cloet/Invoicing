@@ -13,6 +13,7 @@ namespace Invoicing.Helpers
                 cfg.AddProfile<CountryProfile>();
                 cfg.AddProfile<CityProfile>();
                 cfg.AddProfile<ArticleProfile>();
+                cfg.AddProfile<VATProfile>();
             });
         }
 
@@ -39,6 +40,14 @@ namespace Invoicing.Helpers
         public ArticleProfile()
         {
             CreateMap<Article, ArticleDTO>();
+        }
+    }
+
+    public class VATProfile: Profile
+    {
+        public VATProfile()
+        {
+            CreateMap<VAT, VatDTO>();
         }
     }
 

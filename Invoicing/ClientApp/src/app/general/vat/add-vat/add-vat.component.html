@@ -1,0 +1,25 @@
+<mat-card class="mat-elevation-z10">
+  <mat-card-title>Create VAT</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="vatForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="vat-code">
+        <input id="code" matInput aria-label="Code" type="text" formControlName="code" required />
+        <mat-placeholder class="placeholder">code</mat-placeholder>
+        <mat-error>{{ getErrorMessage(vatForm?.get('code'))}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vat-percentage">
+        <input id="percentage" matInput aria-label="Percentage" type="text" formControlName="percentage" required />
+        <mat-placeholder class="placeholder">percentage</mat-placeholder>
+        <mat-error>{{ getErrorMessage(vatForm?.get('percentage'))}}</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field class="vat-description">
+        <input id="percentage" matInput aria-label="Description" type="text" formControlName="description" required />
+        <mat-placeholder class="description">Description</mat-placeholder>
+        <mat-error>{{ getErrorMessage(vatForm?.get('description'))}}</mat-error>
+      </mat-form-field>
+      <br />
+      <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!vatForm.valid">CREATE VAT</button>
+    </form>
+  </mat-card-content>
+</mat-card>

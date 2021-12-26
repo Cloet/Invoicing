@@ -42,7 +42,7 @@
             <mat-icon fontSet="fas" fontIcon="fa-edit" class="table-EditIcon fa-lg"></mat-icon>
           </button>
           <button mat-icon-button aria-label="delete" (click)="onClickDeleteCity(row)" class="table-deleteBtn">
-            <mat-icon fontSet="fas" color="warn" fontIcon="fa-trash" class="rubric-table-DeleteIcon fa-lg"></mat-icon>
+            <mat-icon fontSet="fas" color="warn" fontIcon="fa-trash" class="table-DeleteIcon fa-lg"></mat-icon>
           </button>
         </div>
       </td>
@@ -64,8 +64,8 @@
 <ng-template #loadingOrError>
   <mat-card class="loadingOrError">
     <mat-error *ngIf="(loadingError$ | async) as errorMsg; else loading">
-      Error bij het laden van de rubrics: {{ errorMsg }}. <br />
-      Probeer later opnieuw.
+      Error loading VAT's': {{ errorMsg }}. <br />
+      Please try again later.
     </mat-error>
     <ng-template #loading>
       <div class="loading-spinner-template">
