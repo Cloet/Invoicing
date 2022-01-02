@@ -1,0 +1,39 @@
+.full-width-table {
+  width: 100%;
+}
+
+.mat-elevation-z8 {
+  width: 80%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 1080px) {
+  .mat-elevation-z8 {
+    width: 100%;
+  }
+}
+
+.Filter {
+  margin-top: 10px;
+  margin-left: 25px;
+}
+
+.status-label {
+  border-radius: 5px;
+  padding: 8px;
+  color: #4ca2d5;
+}
+
+.create-article {
+  float: right;
+  margin-top: 20px;
+  margin-right: 25px;
+}
+
+.mat-column-action {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 20%;
+  width: 20%;
+  text-align: right;
+}

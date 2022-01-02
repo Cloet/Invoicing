@@ -23,7 +23,6 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<Country> = new MatTableDataSource(undefined);
   country!: Country;
-  isLoading: boolean = true;
 
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
@@ -38,8 +37,6 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeToErrors<Country>(this._countryService);
-
-    this.isLoading = true;
     this.refresh();
   }
 
@@ -50,10 +47,8 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
-    this._countryService.getCountries$().subscribe();
-    this._countryService.getCountriesArray$().subscribe(
+    this._countryService.getCountries$().subscribe(
       response => {
-        this.isLoading = false;
         this.countries = response;
         this.dataSource = new MatTableDataSource(this.countries);
         setTimeout(() => this.dataSource.sort = this.sort);

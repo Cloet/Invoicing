@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { City } from '../../../common/model/city.model';
 import { Country } from '../../../common/model/country.model';
-import { BaseService } from '../../../common/service/base.service';
 import { CityService } from '../../../common/service/city.service';
 
 @Component({
@@ -17,12 +16,12 @@ import { CityService } from '../../../common/service/city.service';
 export class AddCityComponent extends BaseComponent implements OnInit {
 
   @Input() city!: City;
-  @Output() updated = new EventEmitter<boolean>();
   cityForm!: FormGroup;
   hideCountryList: boolean = true;
 
+
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private _cityService: CityService,
     private _dialog: MatDialog,
     private _snackbar: MatSnackBar,
@@ -30,49 +29,62 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     super(_dialog);
   }
 
+  private CreateFormGroup(formBuilder: FormBuilder): FormGroup {
+    return formBuilder.group({
+      city: formBuilder.group({
+        name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3)
+          ]
+        ],
+        postal: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3)
+          ]
+        ],
+        mainMunicipality: [
+          false
+        ],
+        country: formBuilder.group({
+          name: [
+            {
+              value: '',
+              disabled: true
+            },
+            [
+              Validators.required,
+              Validators.minLength(3),
+              Validators.pattern('[a-zA-Z0-9 _-]*')
+            ]
+          ],
+          countryCode: [
+            {
+              value: '',
+              disabled: true
+            },
+            [
+              Validators.required,
+              Validators.minLength(2),
+              Validators.pattern('[A-Z _-]*')
+            ]
+          ]
+        })
+      })
+    });
+  }
+
   ngOnInit(): void {
     this.hideCountryList = true;
     this.subscribeToErrors<City>(this._cityService);
 
-    this.cityForm = this.fb.group({
-      name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3)
-        ]
-      ],
-      postal: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3)
-        ]
-      ],
-      mainmuncipality: [
-        ''
-      ],
-      countrycode: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3)
-        ]
-      ],
-      countryname: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3)
-        ]
-      ]
-    });
-    this.cityForm.setValidators(this.validateCountry());
-
     this.city = new City();
     this.city.country = new Country();
-    this.cityForm.controls.countrycode.disable();
-    this.cityForm.controls.countryname.disable();
+    this.cityForm = this.CreateFormGroup(this._fb);
+    this.cityForm.setValidators(this.validateCountry());
   }
 
   validateCountry() : ValidatorFn {
@@ -91,10 +103,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
 
   onSubmit() {
     if (this.cityForm?.valid) {
-      this.city.name = this.cityForm.get('name')?.value;
-      this.city.postal = this.cityForm.get('postal')?.value;
-      this.city.mainMunicipality = this.cityForm.get('mainmuncipality')?.value;
-      this.updated.emit(true);
+      this.city.updatePartial(this.cityForm.get('city')?.value);  
       this.addCity();
     }
   }
@@ -106,8 +115,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
   setCountry(country: Country) {
     if (country != undefined) {
       this.city.country = country;
-      this.cityForm.controls.countrycode.setValue(country.countryCode);
-      this.cityForm.controls.countryname.setValue(country.name);
+      this.cityForm.get('city.country')?.patchValue(country);
     }
     this.hideCountryList = true;
   }

@@ -15,7 +15,7 @@ export class CountryService extends BaseService<Country> {
   private _countries = new BehaviorSubject<Country[]>([]);
 
   // Gets updated when items are created / updated.
-  getCountriesArray$(): Observable<Country[]> {
+  private getCountriesArray$(): Observable<Country[]> {
     return this._countries.asObservable();
   }
 
@@ -51,7 +51,7 @@ export class CountryService extends BaseService<Country> {
         map((list: any[]): Country[] => list.map(Country.fromJson))
     ).subscribe(res => this._countries.next(res));
 
-    return this._countries;
+    return this.getCountriesArray$();
   }
 
   public createCountry$(country: Country): Observable<Country> {

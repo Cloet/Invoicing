@@ -15,7 +15,6 @@ import { CountryService } from '../../../common/service/country.service';
 export class AddCountryComponent extends BaseComponent implements OnInit {
 
   @Input() country!: Country;
-  @Output() updated = new EventEmitter<boolean>();
   countryForm!: FormGroup;
 
   constructor(
@@ -28,35 +27,40 @@ export class AddCountryComponent extends BaseComponent implements OnInit {
     super(_dialog)
   }
 
+  private CreateFormGroup(formBuilder: FormBuilder): FormGroup {
+    return formBuilder.group({
+      country: formBuilder.group({
+        name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('[a-zA-Z0-9 _-]*')
+          ]
+        ],
+        countryCode: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.pattern('[A-Z _-]*')
+          ]
+        ]
+      })
+    });
+  }
+
   ngOnInit(): void {
     this.subscribeToErrors<Country>(this._countryService);
 
-    this.countryForm = this.fb.group({
-      code: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern('[A-Z _-]*')
-        ]
-      ],
-      name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern('[a-zA-Z0-9 _-]*')
-        ]
-      ]
-    });
+    this.countryForm = this.CreateFormGroup(this.fb);
     this.country = new Country();
   }
 
   onSubmit() {
     if (this.countryForm?.valid) {
-      this.country.countryCode = this.countryForm.get('code')?.value;
-      this.country.name = this.countryForm.get('name')?.value;
-      this.updated.emit(true);
+      const result: any = Object.assign({}, this.countryForm.value);
+      this.country = result.country;
       this.addCountry();
     }
   }
@@ -71,5 +75,7 @@ export class AddCountryComponent extends BaseComponent implements OnInit {
       });
     }
   }
+
+  
 
 }

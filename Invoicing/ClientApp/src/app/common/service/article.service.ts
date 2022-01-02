@@ -33,7 +33,7 @@ export class ArticleService extends BaseService<Article> {
       );
   }
 
-  public getArticles(): Observable<Article[]> {
+  public getArticles$(): Observable<Article[]> {
     const headers = this.defaultHeaders();
     const options = { headers };
 

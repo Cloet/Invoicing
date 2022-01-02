@@ -1,13 +1,12 @@
 export abstract class BaseModel {
 
-  protected _id: number = 0;
+  public id: number = 0;
 
-
-  public get id(): number {
-      return this._id;
+  constructor() {
   }
-  public set id(value: number) {
-      this._id = value;
+
+  updatePartial<T>(init?: Partial<T>): void {
+    Object.assign(this, init);
   }
 
 }

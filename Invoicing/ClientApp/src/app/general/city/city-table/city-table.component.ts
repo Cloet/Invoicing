@@ -24,8 +24,6 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   dataSource: MatTableDataSource<City> = new MatTableDataSource(undefined);
   city!: City;
 
-  isLoading: boolean = true;
-
   displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'country name', 'mainmuncipality', 'action'];
 
   constructor(
@@ -38,8 +36,6 @@ export class CityTableComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeToErrors<City>(this._cityService);
-
-    this.isLoading = true;
     this.refresh();
   }
 
@@ -50,11 +46,9 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
-    this._cityService.getCities$().subscribe();
-    this._cityService.getCitiesArray$().subscribe(
+    this._cityService.getCities$().subscribe(
       response => {
         this.cities = response;
-        this.isLoading = false;
         this.dataSource = new MatTableDataSource(this.cities);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

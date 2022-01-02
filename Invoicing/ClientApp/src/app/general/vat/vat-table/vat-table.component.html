@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8 mat-table-view" *ngIf="vats.length > 0 || isLoading === false else loadingOrError">
+<div class="mat-elevation-z8 mat-table-view" *ngIf="vats.length > 0 else loadingOrError">
 
   <mat-form-field class="Filter mat-field-inverse">
     <input matInput aria-label="Test" (keyup)="applyFilter($event)" />

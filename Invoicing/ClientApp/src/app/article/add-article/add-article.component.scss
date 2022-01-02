@@ -1,0 +1,55 @@
+.mat-form-field {
+  margin-right: 1em;
+  margin-bottom: 20px;
+}
+
+.mat-card {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.mat-form-field {
+  margin-bottom: 0px;
+}
+
+.hide-article {
+    display: none;
+}
+
+.article-code {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 20%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 20%;
+}
+
+.article-description {
+  word-wrap: break-word;
+  white-space: unset;
+  flex: 0 0 70%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  width: 70%;
+}
+
+.select-vat {
+  width: 10%
+}
+
+.article-vat {
+  margin-left: 1em;
+}

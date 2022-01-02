@@ -90,26 +90,21 @@ namespace Invoicing.EntityFramework.Services.common
         {
             return _repository.Filter(filter, orderBy, skip, take);
         }
-
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter, int take = -1, int skip = -1) {
             return Filter(filter, null, take, skip);
         }
-
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter)
         {
             return Filter(filter, null, -1, -1);
         }
-
         public async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int take = -1, int skip = -1)
         {
             return await _repository.FilterAsync(filter, orderBy, skip, take);
         }
-
         public async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, int take = -1, int skip = -1)
         {
             return await FilterAsync(filter, null, take, skip);
         }
-
         public async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter)
         {
             return await FilterAsync(filter, null, -1, -1);
@@ -123,7 +118,7 @@ namespace Invoicing.EntityFramework.Services.common
         {
             return await _repository.GetAllAsync(orderBy);
         }
-
+  
         public virtual T GetOne(int id)
         {
             return _repository.GetOne(id);
@@ -153,7 +148,6 @@ namespace Invoicing.EntityFramework.Services.common
             var items = await _repository.FilterAsync(null, x => x.OrderBy(x => x.Id), 0, 1);
             return items.FirstOrDefault();
         }
-
 
         public virtual T LastRecord()
         {
@@ -220,7 +214,6 @@ namespace Invoicing.EntityFramework.Services.common
             return item != null;
         }
 
-
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -233,7 +226,6 @@ namespace Invoicing.EntityFramework.Services.common
 
             _disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);
@@ -241,7 +233,6 @@ namespace Invoicing.EntityFramework.Services.common
         }
 
         public virtual void Save() => _repository.Save();
-
         public virtual async Task SaveAsync() => await _repository.SaveAsync();
 
     }

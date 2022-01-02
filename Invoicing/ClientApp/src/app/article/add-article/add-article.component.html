@@ -1,1 +1,49 @@
-<p>add-article works!</p>
+<mat-card [hidden]=!hideVATList class="mat-elevation-z10">
+  <mat-card-title>Create Article</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+      <div formGroupName="article">
+        <mat-form-field class="article-code">
+          <input id="code" matInput aria-label="code" type="text" formControlName="articlecode" autofocus required />
+          <mat-placeholder class="placeholder">code</mat-placeholder>
+          <mat-error>{{ getErrorMessage(articleForm?.get('code')) }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="article-description">
+          <input id="description" matInput aria-label="description" type="text" formControlName="description" autofocus required />
+          <mat-placeholder class="placeholder">description</mat-placeholder>
+          <mat-error>{{ getErrorMessage(articleForm?.get('description')) }}</mat-error>
+        </mat-form-field>
+        <div formGroupName="vat">
+          <button class="mat-raised-button select-vat" type="button" mat-button (click)="onSelect()">SELECT</button>
+          <mat-form-field class="hide-article">
+            <input id="vat" matInput aria-label="code" type="text" formControlName="id" autofocus required />
+          </mat-form-field>
+          <mat-form-field class="hide-article">
+            <input id="vat" matInput aria-label="code" type="text" formControlName="code" autofocus required />
+          </mat-form-field>
+          <mat-form-field class="hide-article">
+            <input id="vat" matInput aria-label="code" type="text" formControlName="description" autofocus required />
+          </mat-form-field>
+          <mat-form-field class="article-vat">
+            <input id="vat" matInput aria-label="code" type="text" formControlName="percentage" autofocus required />
+            <mat-placeholder class="placeholder">VAT</mat-placeholder>
+            <mat-error>{{ getErrorMessage(articleForm?.get('vat')) }}</mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="article-unitprice">
+          <input id="unitprice" matInput aria-label="code" type="text" formControlName="unitprice" autofocus required />
+          <mat-placeholder class="placeholder">Unit Price</mat-placeholder>
+          <mat-error>{{ getErrorMessage(articleForm?.get('unitprice')) }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="article-unitpriceincludingvat">
+          <input id="unitpriceincludingvat" matInput aria-label="code" type="text" formControlName="unitpriceincludingvat" autofocus required />
+          <mat-placeholder class="placeholder">unitpriceincludingvat</mat-placeholder>
+          <mat-error>{{ getErrorMessage(articleForm?.get('unitpriceincludingvat')) }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br />
+      <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!articleForm.valid">CREATE ARTICLE</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<app-vat-selection [hidden]="hideVATList" (vatEvent)="setVAT($event)"></app-vat-selection>

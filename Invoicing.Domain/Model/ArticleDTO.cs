@@ -16,6 +16,8 @@ namespace Invoicing.Domain.Model
 
         public double UnitPrice { get; set; }
 
+        public double UnitPriceIncludingVAT { get; set; }
 
+        public VatDTO VAT { get; set; }
     }
 }

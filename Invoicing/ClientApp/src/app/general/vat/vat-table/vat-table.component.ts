@@ -23,7 +23,6 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<VAT> = new MatTableDataSource(undefined);
   vat!: VAT;
-  isLoading: boolean = true;
 
   displayedColumns: string[] = ['id', 'code','description', 'percentage', 'action'];
 
@@ -39,7 +38,6 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToErrors<VAT>(this._vatService);
 
-    this.isLoading = true;
     this.refresh();
   }
 
@@ -52,7 +50,6 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   refresh() {
     this._vatService.getVAT$().subscribe(
       response => {
-        this.isLoading = false;
         this.vats = response;
         this.dataSource = new MatTableDataSource(this.vats);
         setTimeout(() => this.dataSource.sort = this.sort);
@@ -66,18 +63,18 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   }
 
   onClickDeleteVAT(row: any) {
-    this._vatService.getVATForId$(row.id).subscribe(val => { this.vat = val; });
+    this._vatService.getVATForId$(row.id).subscribe(val => {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      const dialogRef = this._dialog.open(DeleteVatDialogComponent, dialogConfig);
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    const dialogRef = this._dialog.open(DeleteVatDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this._vatService.deleteVAT(this.vat.id).subscribe(res => {
-          this._snackbar.open("VAT has been deleted", 'ok', { duration: 2000 });
-        });
-      }
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this._vatService.deleteVAT(val.id).subscribe(() => {
+            this._snackbar.open("VAT has been deleted", 'ok', { duration: 2000 });
+          });
+        }
+      });
     });
   }
 

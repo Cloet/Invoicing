@@ -1,12 +1,12 @@
-<div class="mat-elevation-z8 mat-table-view" *ngIf="countries.length > 0 else loadingOrError">
+<div class="mat-elevation-z8 mat-table-view" *ngIf="vats.length > 0 else loadingOrError">
 
   <mat-form-field class="Filter mat-field-inverse">
     <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
     <mat-placeholder class="placeholder">Filter</mat-placeholder>
   </mat-form-field>
 
-  <button class="mat-raised-button select-country" mat-button (click)="onConfirm()">Confirm</button>
-  <button class="mat-raised-button return-country" mat-button (click)="onCancel()">Cancel</button>
+  <button class="mat-raised-button select-vat" mat-button (click)="onConfirm()">Confirm</button>
+  <button class="mat-raised-button return-vat" mat-button (click)="onCancel()">Cancel</button>
 
   <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
 
@@ -14,15 +14,19 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
       <td mat-cell *matCellDef="let row">{{row.id}}</td>
     </ng-container>
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>code</th>
+      <td mat-cell *matCellDef="let row">{{row.code}}</td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>description</th>
+      <td mat-cell *matCellDef="let row">{{row.description}}</td>
+    </ng-container>
+    <ng-container matColumnDef="percentage">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>percentage</th>
+      <td mat-cell *matCellDef="let row">{{row.percentage}}</td>
+    </ng-container>
 
-    <ng-container matColumnDef="country">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>country</th>
-      <td mat-cell *matCellDef="let row">{{row.countryCode}}</td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
-      <td mat-cell *matCellDef="let row">{{row.name}}</td>
-    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row
@@ -34,7 +38,7 @@
   </table>
 
   <mat-paginator #paginator
-                 [length]="countries.length"
+                 [length]="vats.length"
                  [pageIndex]="0"
                  [pageSize]="50"
                  [pageSizeOptions]="[1, 25, 50, 100, 250]">

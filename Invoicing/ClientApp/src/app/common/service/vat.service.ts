@@ -47,7 +47,7 @@ export class VATService extends BaseService<VAT> {
         map((list: any[]): VAT[] => list.map(VAT.fromJson))
       ).subscribe(res => this._vat.next(res));
 
-    return this._vat;
+    return this.getVATArray$();
   }
 
   public createVAT$(vat: VAT): Observable<VAT> {

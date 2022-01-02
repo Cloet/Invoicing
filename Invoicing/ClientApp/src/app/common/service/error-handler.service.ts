@@ -10,7 +10,7 @@ export class ErrorHandlerService {
 
   constructor(public dialog: MatDialog) { }
 
-  showErrorDialog(errors: IError[]) {
+  protected showErrorDialog(errors: IError[]) {
     console.log('inside error handler service')
     console.log(errors)
     const dialogConfig = new MatDialogConfig()

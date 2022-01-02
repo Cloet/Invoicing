@@ -2,17 +2,19 @@
   <mat-card-title>Create country</mat-card-title>
   <mat-card-content>
     <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+      <div formGroupName="country">
         <mat-form-field class="country-code">
-          <input id="code" matInput aria-label="Code" type="text" autofocus formControlName="code" required />
+          <input id="countryCode" matInput aria-label="countryCode" type="text" formControlName="countryCode" required />
           <mat-placeholder class="placeholder">code</mat-placeholder>
           <mat-error>{{ getErrorMessage(countryForm?.get('code')) }}</mat-error>
         </mat-form-field>
         <mat-form-field class="country-name">
           <input id="name" matInput aria-label="Country" type="text" formControlName="name" required />
-          <mat-placeholder class="placeholder">name</mat-placeholder>
+          <mat-placeholder class="placeholder">Code</mat-placeholder>
           <mat-error>{{ getErrorMessage(countryForm?.get('name')) }}</mat-error>
         </mat-form-field>
-      <br/>
+      </div>
+      <br />
       <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!countryForm.valid">CREATE COUNTRY</button>
     </form>
   </mat-card-content>

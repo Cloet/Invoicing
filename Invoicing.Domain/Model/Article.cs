@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Invoicing.Domain.Model.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invoicing.Domain.Model
 {
@@ -17,9 +18,13 @@ namespace Invoicing.Domain.Model
 
         public double UnitPrice { get; set; }
 
+        [ForeignKey("VATId")]
         public VAT VAT { get; set; }
 
-        public double UnitPriceIncludingVAT => UnitPrice * (1 + VAT.Percentage / 100);
+        public double UnitPriceIncludingVAT { get; set; }
+
+        [Required]
+        public int VATId { get; set; }
 
     }
 }

@@ -2,9 +2,9 @@ import { BaseModel } from "./base.model";
 
 export class VAT extends BaseModel {
 
-  private _code: string = '';
-  private _percentage: number = 0;
-  private _description: string = '';
+  public code: string = '';
+  public percentage: number = 0;
+  public description: string = '';
 
   constructor() {
     super();
@@ -21,35 +21,11 @@ export class VAT extends BaseModel {
 
   toJSON(): any {
     return {
-      id: this._id,
-      code: this._code,
-      percentage: this._percentage,
-      description: this._description
+      id: this.id,
+      code: this.code,
+      percentage: this.percentage,
+      description: this.description
     }
-  }
-
-  public get code(): string {
-    return this._code;
-  }
-
-  public set code(value: string) {
-    this._code = value;
-  }
-
-  public get description(): string {
-    return this._description;
-  }
-
-  public set description(value: string) {
-    this._description = value;
-  }
-
-  public get percentage(): number {
-    return this._percentage;
-  }
-
-  public set percentage(value: number) {
-    this._percentage = value;
   }
 
 

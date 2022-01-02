@@ -17,5 +17,13 @@ namespace Invoicing.EntityFramework.Services
 
         }
 
+        protected override Article BeforeInsertUpdate(Article entity)
+        {
+            if (entity.VAT != null)
+                entity.VATId = entity.VAT.Id;
+            entity.VAT = null;
+            return base.BeforeInsertUpdate(entity);
+        }
+
     }
 }

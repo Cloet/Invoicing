@@ -3,6 +3,7 @@ using System;
 using Invoicing.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Invoicing.EntityFramework.Migrations
 {
     [DbContext(typeof(InvoicingDbContext))]
-    partial class InvoicingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220102170233_Article")]
+    partial class Article
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -15,11 +15,11 @@ export class CityService extends BaseService<City> {
   public _cities = new BehaviorSubject<City[]>([]);
 
   // Gets updated when items are created / updated.
-  getCitiesArray$(): Observable<City[]> {
+  private getCitiesArray$(): Observable<City[]> {
     return this._cities.asObservable();
   }
 
-  getCityForId$(cityId: number): Observable<City> {
+  public getCityForId$(cityId: number): Observable<City> {
     const headers = this.defaultHeaders();
     const options = { headers };
 
@@ -35,7 +35,7 @@ export class CityService extends BaseService<City> {
       );
   }
 
-  getCities$(): Observable<City[]> {
+  public getCities$(): Observable<City[]> {
     const headers = this.defaultHeaders();
     const options = { headers };
 
@@ -51,10 +51,10 @@ export class CityService extends BaseService<City> {
         map((list: any[]): City[] => list.map(City.fromJson))
       ).subscribe(res => this._cities.next(res));
 
-    return this._cities;
+    return this.getCitiesArray$();
   }
 
-  createCity$(city: City): Observable<City> {
+  public createCity$(city: City): Observable<City> {
     const headers = this.defaultHeaders();
     const options = { headers };
     const payload = JSON.stringify(city);
@@ -71,7 +71,7 @@ export class CityService extends BaseService<City> {
       );
   }
 
-  updateCity$(city: City): Observable<City> {
+  public updateCity$(city: City): Observable<City> {
     const headers = this.defaultHeaders();
     const options = { headers };
     const payload = JSON.stringify(city);
@@ -89,7 +89,7 @@ export class CityService extends BaseService<City> {
 
   }
 
-  deleteCity(id: number) {
+  public deleteCity(id: number) {
     const headers = this.defaultHeaders();
     const options = { headers };
 

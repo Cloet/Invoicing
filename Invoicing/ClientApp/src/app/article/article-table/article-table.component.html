@@ -1,11 +1,11 @@
-<!--<div class="mat-elevation-z8 mat-table-view" *ngIf="articles.length > 0 || isloading === false else loadingOrError">
+<div class="mat-elevation-z8 mat-table-view" *ngIf="articles.length > 0 else loadingOrError" >
 
-  <mat-form-field class="Filter ma-field-inverse">
-    <input matInput aria-label="Filter" (keyup)="applyFilter($event)"/>
+  <mat-form-field class="Filter mat-field-inverse">
+    <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
     <mat-placeholder class="placeholder">Filter</mat-placeholder>
   </mat-form-field>
 
-  <button class="mat-raised-button create-article" mat-button [routerLink]="">Create</button>
+  <button class="mat-raised-button create-article" mat-button [routerLink]="['/article/add-article']">Create</button>
 
   <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
 
@@ -13,32 +13,64 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
       <td mat-cell *matCellDef="let row">{{row.id}}</td>
     </ng-container>
-
-    <ng-container matColumnDef="articlecode">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>ArticleCode</th>
+    <ng-container matColumnDef="article">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Article</th>
       <td mat-cell *matCellDef="let row">{{row.articlecode}}</td>
     </ng-container>
-
-    <ng-container matColumnDef="Description">
+    <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
       <td mat-cell *matCellDef="let row">{{row.description}}</td>
     </ng-container>
-
-    <ng-container matColumnDef="UnitPrice">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price (excl VAT)</th>
+    <ng-container matColumnDef="unitprice">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price excl. VAT</th>
       <td mat-cell *matCellDef="let row">{{row.unitprice}}</td>
     </ng-container>
-
-    <ng-container matColumnDef="VAT">
+    <ng-container matColumnDef="vat">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>VAT</th>
       <td mat-cell *matCellDef="let row">{{row.vat.percentage}}</td>
     </ng-container>
-
-    <ng-container matColumnDef="UnitPricePlusVAT">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price (incl VAT)</th>
-      <td mat-cell *matCellDef="let row">{{row.unitpricevat}}</td>
+    <ng-container matColumnDef="unitpriceInclVat">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price incl. VAT</th>
+      <td mat-cell *matCellDef="let row">{{row.unitpriceincludingvat}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action</th>
+      <td mat-cell *matCellDef="let row" class="action-link">
+        <div>
+          <button mat-icon-button aria-label="edit" (click)="onNavigateRow(row)" class="table-editBtn">
+            <mat-icon fontSet="fas" fontIcon="fa-edit" class="table-EditIcon fa-lg"></mat-icon>
+          </button>
+          <button mat-icon-button aria-label="delete" (click)="onClickDeleteArticle(row)" class="table-deleteBtn">
+            <mat-icon fontSet="fas" color="warn" fontIcon="fa-trash" class="table-DeleteIcon fa-lg"></mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-</div>-->
+  <mat-paginator #paginator
+                 [length]="articles.length"
+                 [pageIndex]="0"
+                 [pageSize]="50"
+                 [pageSizeOptions]="[1, 25, 50, 100, 250]">
+  </mat-paginator>
+
+</div>
+
+<ng-template #loadingOrError>
+  <mat-card class="loadingOrError">
+    <mat-error *ngIf="(loadingError$ | async) as errorMsg; else loading">
+      Error loading articles': {{ errorMsg }}. <br />
+      Please try again later.
+    </mat-error>
+    <ng-template #loading>
+      <div class="loading-spinner-template">
+        <mat-spinner class="loading-spinner"></mat-spinner>
+      </div>
+    </ng-template>
+  </mat-card>
+</ng-template>

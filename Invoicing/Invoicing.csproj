@@ -1,5 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TypeScriptTarget>ESNext</TypeScriptTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TypeScriptTarget>ESNext</TypeScriptTarget>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -30,9 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
+	<None Remove="ClientApp\src\app\common\model\base.model.ts" />
+	<None Remove="ClientApp\src\app\common\model\city.model.ts" />
+	<None Remove="ClientApp\src\app\common\model\country.model.ts" />
     <None Remove="ClientApp\src\app\common\model\article.model.ts" />
     <None Remove="ClientApp\src\app\common\model\vat.model.ts" />
-    <None Remove="ClientApp\src\app\common\service\data.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +51,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\common\model\article.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\common\model\vat.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\base.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\article.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\city.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\country.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\vat.model.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

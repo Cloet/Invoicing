@@ -6,8 +6,10 @@ import { ArticleInfoComponent } from './article-info/article-info.component';
 import { AddArticleComponent } from './add-article/add-article.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { ArticleService } from '../common/service/article-service';
 import { VATService } from '../common/service/vat.service';
+import { DeleteArticleDialogComponent } from './delete-article-dialog/delete-article-dialog.component';
+import { ArticleService } from '../common/service/article.service';
+import { VatSelectionComponent } from '../shared/vat-selection/vat-selection.component';
 
 const articleRoutes: Routes = [
   {
@@ -45,7 +47,8 @@ const articleRoutes: Routes = [
     ArticleDisplayScreenComponent,
     ArticleTableComponent,
     ArticleInfoComponent,
-    AddArticleComponent
+    AddArticleComponent,
+    DeleteArticleDialogComponent
   ],
   imports: [
     CommonModule,
