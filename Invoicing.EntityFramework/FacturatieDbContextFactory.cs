@@ -12,7 +12,7 @@ namespace Invoicing.EntityFramework
 
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("connections.json", optional: false, reloadOnChange: true).Build();
+                .AddJsonFile("config/connections.json", optional: false, reloadOnChange: true).Build();
 
             optionsBuilder.UseNpgsql(config.GetConnectionString("postgres"));
 

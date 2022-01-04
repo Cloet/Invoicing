@@ -26,7 +26,7 @@ namespace Invoicing
         {
             var settings = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("settings.json", optional: false, reloadOnChange: false)
+                .AddJsonFile("config/settings.json", optional: false, reloadOnChange: false)
                 .Build();
             InitLoggerSettings(settings);
         }
