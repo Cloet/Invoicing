@@ -1,8 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { Observable } from 'rxjs';
-import { of } from 'rxjs/internal/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Country } from '../model/country.model';
 import { BaseService } from './base.service';

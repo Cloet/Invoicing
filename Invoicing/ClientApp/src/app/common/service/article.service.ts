@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { Article } from "../model/article.model";
 import { BaseService } from "./base.service";
