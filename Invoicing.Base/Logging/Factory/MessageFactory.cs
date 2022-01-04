@@ -55,11 +55,17 @@ namespace Invoicing.Base.Logging.Factory
                 {
                     if (!typeof(IEnumerable).IsAssignableFrom(field.FieldType) || field.FieldType == typeof(string))
                     {
-                        if (!(field.FieldType.IsPrimitive || field.FieldType == typeof(decimal) || field.FieldType == typeof(string)))
+                        if (field.FieldType.IsPrimitive || field.FieldType == typeof(decimal) || field.FieldType == typeof(string))
                         {
                             if (loop > 0)
                                 builder.Append(" ; ");
-                            builder.Append($"{field.Name.Replace("_", "")} = {field.GetValue(obj)}");
+                            var name = field.Name
+                                    .Replace(">", "")
+                                    .Replace("<", "")
+                                    .Replace("kBackingField", "")
+                                    .Replace("_","");
+
+                            builder.Append($"{name} = {field.GetValue(obj)}");
                             loop++;
                         }
                     }

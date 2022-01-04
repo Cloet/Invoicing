@@ -122,19 +122,19 @@ namespace Invoicing.Base.Logging
             string baseDir;
 
             if (string.IsNullOrEmpty(absolute))
-                baseDir = Directory.GetParent(Location) + "\\" + Location + "\\";
+                baseDir = Directory.GetParent(Location) + Path.DirectorySeparatorChar.ToString() + Location + Path.DirectorySeparatorChar.ToString();
             else
             {
                 baseDir = Path.GetFullPath(Location);
-                if (!(baseDir.EndsWith(@"\") || baseDir.EndsWith(@"\\")))
-                    baseDir += "\\";
+                if (!(baseDir.EndsWith(Path.DirectorySeparatorChar.ToString())))
+                    baseDir += Path.DirectorySeparatorChar.ToString();
             }
 
             if (SeparateLogLevelFiles && !skipSeparateLogLevels)
             {
                 if (SeparataSubDirectories && !string.IsNullOrEmpty(NameSpace))
                 {
-                    return baseDir + GetNamespace().Replace("_", "\\").Replace(".", "\\") + "\\" + name + "." + GetLogLevel() + ".log";
+                    return baseDir + GetNamespace().Replace("_", Path.DirectorySeparatorChar.ToString()).Replace(".", Path.DirectorySeparatorChar.ToString()) + Path.DirectorySeparatorChar.ToString() + name + "." + GetLogLevel() + ".log";
                 }
                 else
                 {
@@ -145,7 +145,7 @@ namespace Invoicing.Base.Logging
             {
                 if (SeparataSubDirectories)
                 {
-                    return baseDir + GetNamespace().Replace("_", "\\").Replace(".", "\\") + "\\" + name + ".log";
+                    return baseDir + GetNamespace().Replace("_", Path.DirectorySeparatorChar.ToString()).Replace(".", Path.DirectorySeparatorChar.ToString()) + Path.DirectorySeparatorChar.ToString() + name + ".log";
                 }
                 else
                 {

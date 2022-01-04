@@ -62,9 +62,14 @@ namespace Invoicing.Base.Helpers
             {
                 if (field.FieldType.IsPrimitive || field.FieldType == typeof(decimal) || field.FieldType == typeof(string))
                 {
+                    var name = field.Name
+                                    .Replace(">", "")
+                                    .Replace("<", "")
+                                    .Replace("kBackingField", "");
+
                     var prop = new PropertyDifferences
                     {
-                        Property = field.Name
+                        Property = name
                     };
 
                     if (oldObj != null)
