@@ -1,20 +1,21 @@
-<mat-toolbar color="primary" class="white-header">
-  <span>Invoicing</span>
-  <span class="toolbar-spacing"></span>
-  <button mat-button [routerLink]="['/article']">Article</button>
-  <button mat-button [matMenuTriggerFor]="general">General</button>
-  <mat-menu #general="matMenu">
-    <button mat-menu-item [routerLink]="['/country']">Country</button>
-    <button mat-menu-item [routerLink]="['/city']">City</button>
-    <button mat-menu-item [routerLink]="['/vat']">VAT</button>
-  </mat-menu>
-</mat-toolbar>
-<mat-toolbar class="toolbar-breadcrumb">
-  <div class="breadcrumb-container">
-    <xng-breadcrumb class="toolbar-breadcrumb-item" [separator]="iconTemplate"></xng-breadcrumb>
-    <ng-template #iconTemplate>
-      <mat-icon>chevron_right</mat-icon>
-    </ng-template>
-  </div>
-
-</mat-toolbar>
+<div class="app-toolbar">
+  <mat-toolbar color="primary" class="white-header">
+    <span>Invoicing</span>
+    <span class="toolbar-spacing"></span>
+    <button mat-button [routerLink]="['/article']">Article</button>
+    <button mat-button [matMenuTriggerFor]="general">General</button>
+    <mat-menu #general="matMenu">
+      <button mat-menu-item [routerLink]="['/country']">Country</button>
+      <button mat-menu-item [routerLink]="['/city']">City</button>
+      <button mat-menu-item [routerLink]="['/vat']">VAT</button>
+    </mat-menu>
+  </mat-toolbar>
+  <mat-toolbar class="toolbar-breadcrumb">
+    <div class="breadcrumb-container">
+      <xng-breadcrumb class="toolbar-breadcrumb-item" [separator]="iconTemplate"></xng-breadcrumb>
+      <ng-template #iconTemplate>
+        <mat-icon>chevron_right</mat-icon>
+      </ng-template>
+    </div>
+  </mat-toolbar>
+</div>
