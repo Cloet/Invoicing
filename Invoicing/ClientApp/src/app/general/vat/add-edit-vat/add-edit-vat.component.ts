@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,77 +9,96 @@ import { VATService } from '../../../common/service/vat.service';
 import { DeleteVatDialogComponent } from '../delete-vat-dialog/delete-vat-dialog.component';
 
 @Component({
-  selector: 'app-edit-vat',
-  templateUrl: './edit-vat.component.html',
-  styleUrls: ['./edit-vat.component.scss']
+  selector: 'app-add-edit-vat',
+  templateUrl: './add-edit-vat.component.html',
+  styleUrls: ['./add-edit-vat.component.scss']
 })
-export class EditVatComponent extends BaseComponent implements OnInit {
+export class AddEditVatComponent extends BaseComponent implements OnInit {
 
   @Input() vat!: VAT;
-  @Output() updated = new EventEmitter<boolean>();
   vatForm!: FormGroup;
+  isAddMode!: boolean;
+  id!: string;
 
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private _vatService: VATService,
     private _router: Router,
-    private _route: ActivatedRoute,
     private _dialog: MatDialog,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private _route: ActivatedRoute
   ) {
     super(_dialog);
   }
 
+  private createFormGroup(formBuilder: FormBuilder): FormGroup {
+    return formBuilder.group({
+      vat: formBuilder.group({
+        id: [''],
+        code: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(1)
+          ]
+        ],
+        percentage: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern('[0-9]*')
+          ]
+        ],
+        description: [
+          ''
+        ]
+      })
+    })
+  }
+
   ngOnInit(): void {
+    this.id = this._route.snapshot.params['id'];
+    this.isAddMode = !this.id
+
     this.subscribeToErrors<VAT>(this._vatService);
 
-    this.vatForm = this.fb.group({
-      code: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1)
-        ]
-      ],
-      percentage: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('[0-9]*')
-        ]
-      ],
-      description: [
-        ''
-      ]
-    });
+    this.vatForm = this.createFormGroup(this._fb);
     this.vat = new VAT();
-    this.vatForm.controls.code.disable();
 
+    if (!this.isAddMode) {
+      this._vatService.getVATForId$(Number(this.id)).subscribe(val => {
+        this.vat = val;
+        this.vatForm.get('vat')?.patchValue(val);
+      });
+    }
 
-    let id = this._route.snapshot.paramMap.get('id');
-    if (id != null) {
-      this._vatService.getVATForId$(Number(id)).subscribe(
-        res => {
-          this.vat = res;
-          this.vatForm.controls.code.setValue(res.code);
-          this.vatForm.controls.percentage.setValue(res.percentage);
-          this.vatForm.controls.description.setValue(res.description);
+  }
+
+  onSubmit() {
+    if (this.vatForm?.valid) {
+      this.vat.updatePartial(this.vatForm.getRawValue().vat);
+      if (this.isAddMode) {
+        this.addVAT();
+      } else {
+        this.updateVAT();
+      }
+    }
+  }
+
+  addVAT() {
+    if (this.vatForm?.valid) {
+      this._vatService.createVAT$(this.vat).subscribe(
+        response => {
+          if (response.id != null && response.id > 0) {
+            this._snackbar.open("VAT has been created.", 'ok', { duration: 2000 });
+            this._router.navigate(['/vat']);
+          }
         }
       );
     }
   }
 
-  onSubmit() {
-    if (this.vatForm?.valid) {
-      this.vat.code = this.vatForm.get('code')?.value;
-      this.vat.percentage = this.vatForm.get('percentage')?.value;
-      this.vat.description = this.vatForm.get('description')?.value;
-      this.updated.emit(true);
-      this.saveVAT();
-    }
-  }
-
-  saveVAT() {
+  updateVAT() {
     if (this.vatForm?.valid) {
       this._vatService.updateVAT$(this.vat).subscribe(res => {
         this._snackbar.open("VAT has been saved", 'ok', { duration: 2000 });
@@ -112,6 +131,5 @@ export class EditVatComponent extends BaseComponent implements OnInit {
 
     })
   }
-
 
 }

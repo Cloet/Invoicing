@@ -79,4 +79,18 @@
   .mat-elevation-z8 {
     width: 100%;
   }
+  .mat-column-id {
+    display: none;
+  }
+  .mat-column-country {
+    padding-left: 10px;
+    width: 20%;
+  }
+  .mat-column-name {
+    width: 30%;
+  }
+  .mat-column-action {
+    width: 30%;
+  }
+
 }

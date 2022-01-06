@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddVatComponent } from './add-vat/add-vat.component';
-import { EditVatComponent } from './edit-vat/edit-vat.component';
 import { VatDisplayScreenComponent } from './vat-display-screen/vat-display-screen.component';
 import { VatTableComponent } from './vat-table/vat-table.component';
 import { DeleteVatDialogComponent } from './delete-vat-dialog/delete-vat-dialog.component';
 import { RouterModule, Routes } from '@angular/router';
-import { VAT } from '../../common/model/vat.model';
 import { SharedModule } from '../../shared/shared.module';
 import { VATService } from '../../common/service/vat.service';
+import { AddEditVatComponent } from './add-edit-vat/add-edit-vat.component';
 
 const vatRoutes: Routes = [
   {
@@ -26,15 +24,15 @@ const vatRoutes: Routes = [
         }
       },
       {
-        path: 'add-vat',
-        component: AddVatComponent,
+        path: 'add',
+        component: AddEditVatComponent,
         data: {
           breadcrumb: 'Create'
         }
       },
       {
-        path: 'edit-vat/:id',
-        component: EditVatComponent,
+        path: 'edit/:id',
+        component: AddEditVatComponent,
         data: {
           breadcrumb: 'Edit'
         }
@@ -45,11 +43,10 @@ const vatRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AddVatComponent,
-    EditVatComponent,
     VatDisplayScreenComponent,
     VatTableComponent,
-    DeleteVatDialogComponent
+    DeleteVatDialogComponent,
+    AddEditVatComponent
   ],
   imports: [
     CommonModule,

@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
-import { AddCountryComponent } from './add-country/add-country.component';
 import { DeleteCountryDialogComponent } from './delete-country-dialog/delete-country-dialog.component';
-import { EditCountryComponent } from './edit-country/edit-country.component';
-import { CountryViewComponent } from './country-view/country-view.component';
 import { CountryDisplayScreenComponent } from './country-display-screen/country-display-screen.component';
 import { CountryService } from '../../common/service/country.service';
+import { AddEditCountryComponent } from './add-edit-country/add-edit-country.component';
+import { CountryViewComponent } from './country-view/country-view.component';
 
 const countryRoutes: Routes = [
   {
@@ -22,15 +21,15 @@ const countryRoutes: Routes = [
         component: CountryViewComponent,
       },
       {
-        path: 'add-country',
-        component: AddCountryComponent,
+        path: 'add',
+        component: AddEditCountryComponent,
         data: {
           breadcrumb: 'Create'
         }
       },
       {
-        path: 'edit-country/:id',
-        component: EditCountryComponent,
+        path: 'edit/:id',
+        component: AddEditCountryComponent,
         data: {
           breadcrumb: 'Edit'
         }
@@ -42,10 +41,9 @@ const countryRoutes: Routes = [
 @NgModule({
   declarations: [
     CountryViewComponent,
-    AddCountryComponent,
     DeleteCountryDialogComponent,
-    EditCountryComponent,
-    CountryDisplayScreenComponent
+    CountryDisplayScreenComponent,
+    AddEditCountryComponent
   ],
   imports: [
     CommonModule,

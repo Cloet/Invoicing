@@ -1,29 +1,3 @@
-.full-width-table {
-  width: 100%;
-}
-
-.mat-elevation-z8 {
-  width: 50%;
-  margin: auto;
-}
-
-.Filter {
-  margin-top: 10px;
-  margin-left: 25px;
-}
-
-.select-vat {
-  float: right;
-  margin-top: 20px;
-  margin-right: 25px;
-}
-
-.return-vat {
-  float: right;
-  margin-top: 20px;
-  margin-right: 25px;
-}
-
 .mat-column-id {
   word-wrap: break-word;
   white-space: unset;
@@ -68,4 +42,31 @@
 
 .mat-row {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 1080px) {
+  .mat-elevation-z8 {
+    width: 100%;
+  }
+
+  .mat-column-id {
+    display: none;
+  }
+
+  .mat-column-code {
+    padding-left: 10px;
+    width: 25%;
+  }
+
+  mat-column-description {
+    width: 20%;
+  }
+
+  .mat-column-percentage {
+    width: 15%;
+  }
+
+  .mat-column-action {
+    width: 30%
+  }
 }

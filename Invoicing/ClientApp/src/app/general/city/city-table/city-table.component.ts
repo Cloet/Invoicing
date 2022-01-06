@@ -24,7 +24,7 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   dataSource: MatTableDataSource<City> = new MatTableDataSource(undefined);
   city!: City;
 
-  displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'country name', 'mainmuncipality', 'action'];
+  displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'countryname', 'mainmuncipality', 'action'];
 
   constructor(
     private _cityService: CityService
@@ -61,7 +61,7 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   }
 
   onNavigateRow(row: any) {
-    this._router.navigate(['/city/edit-city/' + row.id]);
+    this._router.navigate(['/city/edit/' + row.id]);
   }
 
   onClickDeleteCity(row: any) {

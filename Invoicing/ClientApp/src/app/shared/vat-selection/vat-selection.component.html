@@ -1,12 +1,14 @@
-<div class="mat-elevation-z8 mat-table-view" *ngIf="vats.length > 0 else loadingOrError">
+<div class="mat-elevation-z8 mat-table-view mat-card-50" *ngIf="vats.length > 0 else loadingOrError">
 
-  <mat-form-field class="Filter mat-field-inverse">
-    <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
-    <mat-placeholder class="placeholder">Filter</mat-placeholder>
-  </mat-form-field>
+  <div>
+    <mat-form-field class="Filter table-filter mat-field-inverse">
+      <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
+      <mat-placeholder class="placeholder">Filter</mat-placeholder>
+    </mat-form-field>
+    <button class="mat-raised-button table-cancel" mat-button (click)="onCancel()"><mat-icon>cancel</mat-icon></button>
+    <button class="mat-raised-button table-confirmation" mat-button (click)="onConfirm()"><mat-icon>check</mat-icon></button>
+  </div>
 
-  <button class="mat-raised-button select-vat" mat-button (click)="onConfirm()">Confirm</button>
-  <button class="mat-raised-button return-vat" mat-button (click)="onCancel()">Cancel</button>
 
   <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
 

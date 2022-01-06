@@ -57,7 +57,7 @@ export class ArticleTableComponent extends BaseComponent implements OnInit {
   }
 
   onNavigateRow(row: Article) {
-    this._router.navigate(['/article/edit-article/' + row.id]);
+    this._router.navigate(['/article/edit/' + row.id]);
   }
 
   onClickDeleteArticle(row: Article) {

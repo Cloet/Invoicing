@@ -59,7 +59,7 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   }
 
   onNavigateRow(row: any) {
-    this._router.navigate(['/vat/edit-vat/' + row.id]);
+    this._router.navigate(['/vat/edit/' + row.id]);
   }
 
   onClickDeleteVAT(row: any) {

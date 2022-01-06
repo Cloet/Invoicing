@@ -58,7 +58,7 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   }
 
   onNavigateRow(row: any) {
-    this._router.navigate(['/country/edit-country/' + row.id]);
+    this._router.navigate(['/country/edit/' + row.id]);
   }
 
   onClickDeleteCountry(row: any) {

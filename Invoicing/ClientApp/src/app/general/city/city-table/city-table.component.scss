@@ -11,6 +11,40 @@
   .mat-elevation-z8 {
     width: 100%;
   }
+  .mat-column-id {
+    display: none;
+    width: 0%;
+  }
+
+  .mat-column-city {
+    padding-left: 10px;
+    width: 30%
+  }
+
+  .mat-column-postal {
+    width: 30%;
+  }
+
+  .mat-column-country {
+    display: none;
+    width: 0%;
+  }
+
+  .mat-column-countryname {
+    width: 15%;
+  }
+
+  .mat-column-mainmuncipality {
+    display: none;
+  }
+
+  .mat-column-action {
+    word-wrap: break-word;
+    white-space: unset;
+    flex: 0 0 20%;
+    width: 20%;
+    text-align: right;
+  }
 }
 
 .Filter {
@@ -100,6 +134,13 @@
   width: 15%;
 }
 
+.mat-column-mainmuncipality {
+  flex: 0 0 20%;
+  align-content: center;
+  text-align: center;
+  width: 5%
+}
+
 .mat-column-action {
   word-wrap: break-word;
   white-space: unset;
@@ -108,9 +149,3 @@
   text-align: right;
 }
 
-.mat-column-mainmuncipality {
-    flex: 0 0 20%;
-    align-content: center;
-    text-align: center;
-    width: 5%
-}

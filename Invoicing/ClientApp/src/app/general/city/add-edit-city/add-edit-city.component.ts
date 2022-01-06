@@ -1,31 +1,34 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../../common/base.component';
 import { City } from '../../../common/model/city.model';
 import { Country } from '../../../common/model/country.model';
 import { CityService } from '../../../common/service/city.service';
+import { DeleteCityDialogComponent } from '../delete-city-dialog/delete-city-dialog.component';
 
 @Component({
-  selector: 'app-add-city',
-  templateUrl: './add-city.component.html',
-  styleUrls: ['./add-city.component.scss']
+  selector: 'app-add-edit-city',
+  templateUrl: './add-edit-city.component.html',
+  styleUrls: ['./add-edit-city.component.scss']
 })
-export class AddCityComponent extends BaseComponent implements OnInit {
+export class AddEditCityComponent extends BaseComponent implements OnInit {
 
   @Input() city!: City;
   cityForm!: FormGroup;
   hideCountryList: boolean = true;
-
+  id!: string;
+  isAddMode!: boolean;
 
   constructor(
     private _fb: FormBuilder,
     private _cityService: CityService,
     private _dialog: MatDialog,
     private _snackbar: MatSnackBar,
-    private router: Router) {
+    private _router: Router,
+    private _route: ActivatedRoute) {
     super(_dialog);
   }
 
@@ -50,6 +53,12 @@ export class AddCityComponent extends BaseComponent implements OnInit {
           false
         ],
         country: formBuilder.group({
+          id: [
+            {
+              value: 0,
+              disabled: true
+            }
+          ],
           name: [
             {
               value: '',
@@ -78,6 +87,9 @@ export class AddCityComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.id = this._route.snapshot.params['id'];
+    this.isAddMode = !this.id
+
     this.hideCountryList = true;
     this.subscribeToErrors<City>(this._cityService);
 
@@ -85,11 +97,18 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     this.city.country = new Country();
     this.cityForm = this.CreateFormGroup(this._fb);
     this.cityForm.setValidators(this.validateCountry());
+
+    if (!this.isAddMode) {
+      this._cityService.getCityForId$(Number(this.id)).subscribe(val => {
+        this.city = val;
+        this.cityForm.get("city")?.patchValue(val);
+      });
+    }
   }
 
-  validateCountry() : ValidatorFn {
+  validateCountry(): ValidatorFn {
 
-    let valid =  (group: AbstractControl): ValidationErrors | null => {
+    let valid = (group: AbstractControl): ValidationErrors | null => {
       if (this.city.country === null || (this.city.country != null && this.city.country?.id <= 0)) {
         return { required: true };
       }
@@ -103,8 +122,12 @@ export class AddCityComponent extends BaseComponent implements OnInit {
 
   onSubmit() {
     if (this.cityForm?.valid) {
-      this.city.updatePartial(this.cityForm.get('city')?.value);  
-      this.addCity();
+      this.city.updatePartial(this.cityForm.getRawValue().city);
+      if (this.isAddMode) {
+        this.addCity();
+      } else {
+        this.updateCity();
+      }
     }
   }
 
@@ -123,10 +146,45 @@ export class AddCityComponent extends BaseComponent implements OnInit {
   addCity() {
     this._cityService.createCity$(this.city).subscribe(response => {
       if (response.id != null && response.id > 0) {
-        this.router.navigate(['/city']);
+        this._router.navigate(['/city']);
         this._snackbar.open("City has been created.", 'ok', { duration: 2000 });
       }
     });
+  }
+
+  updateCity() {
+    this._cityService.updateCity$(this.city).subscribe(response => {
+      if (response.id != null && response.id > 0) {
+        this._snackbar.open("City has been saved.", "ok", { duration: 2000 });
+      }
+    })
+  }
+
+  deleteCity() {
+    this._cityService.getCityForId$(this.city.id).subscribe(val => {
+      this.city = val;
+
+      if (this.city.id === undefined || this.city.id <= 0) {
+        this.showErrorDialog("Cannot delete city, entry not found.");
+        this._router.navigate(['/city']);
+        return;
+      }
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      const dialogRef = this._dialog.open(DeleteCityDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this._cityService.deleteCity(this.city.id).subscribe(res => {
+            this._snackbar.open("City has been deleted.", 'ok', { duration: 2000 });
+            this._router.navigate(['/city']);
+          });
+        }
+      });
+
+    });
+
   }
 
 }

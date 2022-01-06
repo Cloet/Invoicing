@@ -93,4 +93,24 @@ mat-column-description {
   .mat-elevation-z8 {
     width: 100%;
   }
+  .mat-column-id {
+      display: none;
+  }
+
+  .mat-column-code {
+      padding-left: 10px;
+      width: 25%;
+  }
+
+  mat-column-description {
+      width: 20%;
+  }
+
+  .mat-column-percentage {
+      width: 15%;
+  }
+
+  .mat-column-action {
+      width: 30%
+  }
 }

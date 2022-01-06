@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticleDisplayScreenComponent } from './article-display-screen/article-display-screen.component';
 import { ArticleTableComponent } from './article-table/article-table.component';
-import { ArticleInfoComponent } from './article-info/article-info.component';
-import { AddArticleComponent } from './add-article/add-article.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { VATService } from '../common/service/vat.service';
 import { DeleteArticleDialogComponent } from './delete-article-dialog/delete-article-dialog.component';
 import { ArticleService } from '../common/service/article.service';
 import { VatSelectionComponent } from '../shared/vat-selection/vat-selection.component';
+import { AddEditArticleComponent } from './add-edit-article/add-edit-article.component';
 
 const articleRoutes: Routes = [
   {
@@ -24,15 +23,15 @@ const articleRoutes: Routes = [
         component: ArticleTableComponent
       },
       {
-        path: 'add-article',
-        component: AddArticleComponent,
+        path: 'add',
+        component: AddEditArticleComponent,
         data: {
           breadcrumb: 'Create'
         }
       },
       {
-        path: 'article-info/:id',
-        component: ArticleInfoComponent,
+        path: 'edit/:id',
+        component: AddEditArticleComponent,
         data: {
           breadcrumb: 'Info'
         }
@@ -46,9 +45,8 @@ const articleRoutes: Routes = [
   declarations: [
     ArticleDisplayScreenComponent,
     ArticleTableComponent,
-    ArticleInfoComponent,
-    AddArticleComponent,
-    DeleteArticleDialogComponent
+    DeleteArticleDialogComponent,
+    AddEditArticleComponent
   ],
   imports: [
     CommonModule,

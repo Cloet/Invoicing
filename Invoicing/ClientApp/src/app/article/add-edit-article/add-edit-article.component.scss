@@ -3,19 +3,12 @@
   margin-bottom: 20px;
 }
 
-.mat-card {
-  margin: auto;
-  width: 50%;
-  padding: 10px;
-  margin-top: 20px;
-}
-
 .mat-form-field {
   margin-bottom: 0px;
 }
 
 .hide-article {
-    display: none;
+  display: none;
 }
 
 .article-code {
@@ -46,10 +39,27 @@
   width: 70%;
 }
 
+.price {
+  display: flex;
+}
+
 .select-vat {
   width: 10%
 }
 
 .article-vat {
-  margin-left: 1em;
+  width: 100%;
+}
+
+.article-unitprice {
+  width: 30%;
+}
+
+.article-unitpriceincludingvat {
+  width: 30%;
+  margin-left: 10px;
+}
+
+.vat-group {
+  width: 30%;
 }

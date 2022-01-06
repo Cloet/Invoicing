@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddVatComponent } from './add-vat.component';
+import { AddEditCityComponent } from './add-edit-city.component';
 
-describe('AddVatComponent', () => {
-  let component: AddVatComponent;
-  let fixture: ComponentFixture<AddVatComponent>;
+describe('AddEditCityComponent', () => {
+  let component: AddEditCityComponent;
+  let fixture: ComponentFixture<AddEditCityComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddVatComponent ]
+      declarations: [ AddEditCityComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddVatComponent);
+    fixture = TestBed.createComponent(AddEditCityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
