@@ -11,7 +11,7 @@ import { DeleteCountryDialogComponent } from '../delete-country-dialog/delete-co
 @Component({
   selector: 'app-add-edit-country',
   templateUrl: './add-edit-country.component.html',
-  styleUrls: ['./add-edit-country.component.css']
+  styleUrls: ['./add-edit-country.component.scss']
 })
 export class AddEditCountryComponent extends BaseComponent implements OnInit {
 

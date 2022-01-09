@@ -50,6 +50,7 @@
       <br />
       <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!articleForm.valid" *ngIf="isAddMode">CREATE ARTICLE</button>
       <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!articleForm.valid" *ngIf="!isAddMode">SAVE ARTICLE</button>
+      <button class="mat-raised-button delete-button" color="warn" type="button" mat-button (click)="deleteArticle()" [disabled]="article.id <= 0" *ngIf="!isAddMode">DELETE ARTICLE</button>
     </form>
   </mat-card-content>
 </mat-card>
