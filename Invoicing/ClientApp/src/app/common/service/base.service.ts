@@ -23,6 +23,13 @@ export abstract class BaseService<T extends BaseModel> {
     });
   }
 
+  protected getErrorMsg(error: HttpErrorResponse): string {
+    if (error.error.message === undefined || error.error.message == '')
+      return error.error;
+
+    return error.error.message;
+  }
+
   protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occured:', error.error.message);

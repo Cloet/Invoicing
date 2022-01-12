@@ -1,0 +1,19 @@
+<mat-card [hidden]="!hideCityList" class="mat-elevation-z10 mat-card-50">
+  <mat-card-title *ngIf="isAddMode">Create Address</mat-card-title>
+  <mat-card-title *ngIf="!isAddMode">Edit Address</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+      <div formGroupName="address">
+        <mat-form-field class="address-name">
+          <input id="name" matInput aria-label="name" type="text" formControlName="name" autofocus required />
+          <mat-placeholder class="placeholder">name</mat-placeholder>
+          <mat-error>{{ getErrorMessage(addressForm?.get('name')) }}</mat-error>
+        </mat-form-field>
+      </div>
+      <br />
+      <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!addressForm.valid" *ngIf="isAddMode">CREATE ADDRESS</button>
+      <button class="mat-raised-button mat-accent" mat-button type="submit" [disabled]="!addressFormvalid" *ngIf="!isAddMode">SAVE ADDRESS</button>
+      <button class="mat-raised-button delete-button" color="warn" type="button" mat-button (click)="deleteAddress()" [disabled]="address.id <= 0" *ngIf="!isAddMode">DELETE ADDRESS</button>
+    </form>
+  </mat-card-content>
+</mat-card>

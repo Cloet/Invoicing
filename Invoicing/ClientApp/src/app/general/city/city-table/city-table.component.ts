@@ -22,7 +22,7 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<City> = new MatTableDataSource(undefined);
-  city!: City;
+  isLoading: boolean = true;
 
   displayedColumns: string[] = ['id', 'city', 'postal', 'country', 'countryname', 'mainmuncipality', 'action'];
 
@@ -46,8 +46,10 @@ export class CityTableComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
+    this.isLoading = true;
     this._cityService.getCities$().subscribe(
       response => {
+        // this.isLoading = false;
         this.cities = response;
         this.dataSource = new MatTableDataSource(this.cities);
         this.dataSource.sort = this.sort;

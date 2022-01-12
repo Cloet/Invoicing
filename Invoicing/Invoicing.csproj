@@ -42,10 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
+	<None Remove="ClientApp\src\app\common\model\address.model.ts" />
 	<None Remove="ClientApp\src\app\common\model\base.model.ts" />
 	<None Remove="ClientApp\src\app\common\model\city.model.ts" />
 	<None Remove="ClientApp\src\app\common\model\country.model.ts" />
     <None Remove="ClientApp\src\app\common\model\article.model.ts" />
+    <None Remove="ClientApp\src\app\common\model\customer.model.ts" />
     <None Remove="ClientApp\src\app\common\model\vat.model.ts" />
   </ItemGroup>
 
@@ -55,10 +57,12 @@
   </ItemGroup>
 
   <ItemGroup>
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\address.model.ts" />
 	<TypeScriptCompile Include="ClientApp\src\app\common\model\base.model.ts" />
 	<TypeScriptCompile Include="ClientApp\src\app\common\model\article.model.ts" />
 	<TypeScriptCompile Include="ClientApp\src\app\common\model\city.model.ts" />
 	<TypeScriptCompile Include="ClientApp\src\app\common\model\country.model.ts" />
+	<TypeScriptCompile Include="ClientApp\src\app\common\model\customer.model.ts" />
 	<TypeScriptCompile Include="ClientApp\src\app\common\model\vat.model.ts" />
   </ItemGroup>
 

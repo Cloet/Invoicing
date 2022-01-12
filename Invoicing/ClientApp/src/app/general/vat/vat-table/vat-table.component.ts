@@ -22,7 +22,7 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<VAT> = new MatTableDataSource(undefined);
-  vat!: VAT;
+  isLoading: boolean = true;
 
   displayedColumns: string[] = ['id', 'code','description', 'percentage', 'action'];
 
@@ -48,8 +48,10 @@ export class VatTableComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
+    this.isLoading = false;
     this._vatService.getVAT$().subscribe(
       response => {
+        this.isLoading = true;
         this.vats = response;
         this.dataSource = new MatTableDataSource(this.vats);
         setTimeout(() => this.dataSource.sort = this.sort);

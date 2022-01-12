@@ -23,7 +23,7 @@ export class VATService extends BaseService<VAT> {
     return this.http.get<VAT>(`${this.serviceUrl}/vat/${vatId}`, options)
       .pipe(
         catchError(error => {
-          this.loadingError$.next(error.error.message);
+          this.loadingError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -39,7 +39,7 @@ export class VATService extends BaseService<VAT> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }
@@ -58,7 +58,7 @@ export class VATService extends BaseService<VAT> {
     return this.http.post<VAT>(`${this.serviceUrl}/vat/`, payload, options)
       .pipe(
         catchError(error => {
-          this.postError$.next(error.error.message);
+          this.postError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -75,7 +75,7 @@ export class VATService extends BaseService<VAT> {
     return this.http.put(`${this.serviceUrl}/vat/${vat.id}`, payload, options)
       .pipe(
         catchError(error => {
-          this.putError$.next(error.error.message);
+          this.putError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -91,7 +91,7 @@ export class VATService extends BaseService<VAT> {
     return this.http.delete(`${this.serviceUrl}/vat/${id}`, options)
       .pipe(
         catchError(error => {
-          this.deleteError$.next(error.error.message);
+          this.deleteError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),

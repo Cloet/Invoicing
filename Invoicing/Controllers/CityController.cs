@@ -8,7 +8,7 @@ namespace Invoicing.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class CityController : ControllerBase    
+    public class CityController : BaseController   
     {
         private readonly ILogger<CityController> _logger;
         private readonly ICityService _cityService;
@@ -38,7 +38,7 @@ namespace Invoicing.Controllers
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
+                return Generate500ServerError(ex);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Invoicing.Controllers
                 return Ok(dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
+                return Generate500ServerError(ex);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Invoicing.Controllers
                 return CreatedAtRoute("city", new { id = city.Id }, dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
+                return Generate500ServerError(ex);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Invoicing.Controllers
                 return CreatedAtRoute("city", new { id = city.Id }, dto);
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
+                return Generate500ServerError(ex);
             }
         }
 
@@ -132,7 +132,7 @@ namespace Invoicing.Controllers
                 return NoContent();
             } catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ValidationError(ex.Message));
+                return Generate500ServerError(ex);
             }
         }
 

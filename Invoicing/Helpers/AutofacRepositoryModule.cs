@@ -12,7 +12,9 @@ namespace Invoicing.Helpers
             builder.RegisterType<CountryRepository>().As<ICountryRepository>();
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<VATRepository>().As<IVATRepository>();
-            builder.RegisterType<ArticleRepository>().As<IArticleRepository>(); 
+            builder.RegisterType<ArticleRepository>().As<IArticleRepository>();
+            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<AddressRepository>().As<IAddressRepository>();
         }
 
     }

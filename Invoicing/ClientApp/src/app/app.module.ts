@@ -17,7 +17,9 @@ const appRoutes: Routes = [
   { path: 'country', loadChildren: () => import('./general/country/country.module').then(m => m.CountryModule) },
   { path: 'city', loadChildren: () => import('./general/city/city.module').then(m => m.CityModule) },
   { path: 'vat', loadChildren: () => import('./general/vat/vat.module').then(m => m.VatModule) },
-  { path: 'article', loadChildren: () => import('./article/article.module').then(m => m.ArticleModule)},
+  { path: 'article', loadChildren: () => import('./article/article.module').then(m => m.ArticleModule) },
+  { path: 'address', loadChildren: () => import('./general/address/address.module').then(m => m.AddressModule) },
+  { path: 'customer', loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule) },
   { path: 'not-found', component: PageNotFoundComponent},
   { path: '**', component: PageNotFoundComponent}
 ]

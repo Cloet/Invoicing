@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8 mat-table-view" *ngIf="articles.length > 0 else loadingOrError" >
+<div class="mat-elevation-z8 mat-table-view" *ngIf="articles.length > 0 && !isLoading else loadingOrError" >
 
   <mat-form-field class="Filter mat-field-inverse">
     <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
@@ -64,7 +64,7 @@
 <ng-template #loadingOrError>
   <mat-card class="loadingOrError">
     <mat-error *ngIf="(loadingError$ | async) as errorMsg; else loading">
-      Error loading articles': {{ errorMsg }}. <br />
+      Error loading VAT's': {{ errorMsg }}. <br />
       Please try again later.
     </mat-error>
     <ng-template #loading>

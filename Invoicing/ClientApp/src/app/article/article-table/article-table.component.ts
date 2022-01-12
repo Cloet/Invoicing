@@ -22,6 +22,7 @@ export class ArticleTableComponent extends BaseComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<Article> = new MatTableDataSource(undefined);
+  isLoading: boolean = true;
 
   displayedColumns: string[] = ['id', 'article', 'description', 'unitprice', 'vat','unitpriceInclVat', 'action']
 
@@ -46,8 +47,10 @@ export class ArticleTableComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
+    this.isLoading = true;
     this._articleService.getArticles$().subscribe(
       response => {
+        this.isLoading = false;
         this.articles = response;
         this.dataSource = new MatTableDataSource(this.articles);
         this.dataSource.sort = this.sort;

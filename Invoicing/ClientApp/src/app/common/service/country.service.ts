@@ -26,7 +26,7 @@ export class CountryService extends BaseService<Country> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
         }),
@@ -42,7 +42,7 @@ export class CountryService extends BaseService<Country> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }
@@ -61,7 +61,7 @@ export class CountryService extends BaseService<Country> {
     return this.http.post<Country>(`${this.serviceUrl}/country/`, payload, options)
       .pipe(
         catchError(error => {
-          this.postError$.next(error.error.message);
+          this.postError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -78,7 +78,7 @@ export class CountryService extends BaseService<Country> {
     return this.http.put(`${this.serviceUrl}/country/${country.id}`, payload, options)
       .pipe(
         catchError(error => {
-          this.putError$.next(error.error.message);
+          this.putError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -95,7 +95,7 @@ export class CountryService extends BaseService<Country> {
     return this.http.delete(`${this.serviceUrl}/country/${id}`, options)
       .pipe(
         catchError(error => {
-          this.deleteError$.next(error.error.message);
+          this.deleteError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),

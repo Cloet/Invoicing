@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../common/base.component';
 import { Article } from '../../common/model/article.model';
 import { VAT } from '../../common/model/vat.model';
 import { ArticleService } from '../../common/service/article.service';
+import { DeleteArticleDialogComponent } from '../delete-article-dialog/delete-article-dialog.component';
 
 @Component({
   selector: 'app-add-edit-article',
@@ -129,6 +130,24 @@ export class AddEditArticleComponent extends BaseComponent implements OnInit {
       this.articleForm.get('article.vat')?.patchValue(vat);
     }
     this.hideVATList = true;
+  }
+
+  deleteArticle() {
+    this._articleService.getArticleForId$(this.article.id).subscribe(
+      val => {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        const dialogRef = this._dialog.open(DeleteArticleDialogComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this._articleService.deleteArticle(val.id).subscribe(() => {
+              this._snackbar.open("Article has been deleted.", 'ok', { duration: 2000 });
+            });
+          }
+        });
+      }
+    )
   }
 
   updateArticle() {

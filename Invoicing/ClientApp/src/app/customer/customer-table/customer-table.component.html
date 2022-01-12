@@ -1,0 +1,76 @@
+<div class="mat-elevation-z8 mat-table-view" *ngIf="customers.length > 0 && !isLoading else loadingOrError">
+
+  <mat-form-field class="Filter mat-field-inverse">
+    <input matInput aria-label="Test" (keyup)="applyFilter($event)" />
+    <mat-placeholder class="placeholder">Filter</mat-placeholder>
+  </mat-form-field>
+
+  <button class="mat-raised-button create-customer" mat-button [routerLink]="['/customer/add']">Create</button>
+
+  <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+    </ng-container>
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+      <td mat-cell *matCellDef="let row">{{row.customerCode}}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">{{row.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="telephone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telephone</th>
+      <td mat-cell *matCellDef="let row">{{row.telephone}}</td>
+    </ng-container>
+    <ng-container matColumnDef="mobile">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</th>
+      <td mat-cell *matCellDef="let row">{{row.mobile}}</td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</th>
+      <td mat-cell *matCellDef="let row">{{row.email}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action</th>
+      <td mat-cell *matCellDef="let row" class="action-link">
+        <div>
+          <button mat-icon-button aria-label="edit" (click)="onNavigateRow(row)" class="table-table-editBtn">
+            <mat-icon fontSet="fas" fontIcon="fa-edit" class="table-EditIcon fa-lg"></mat-icon>
+          </button>
+          <button mat-icon-button aria-label="delete" (click)="onClickDeleteCustomer(row)" class="table-deleteBtn">
+            <mat-icon fontSet="fas" color="warn" fontIcon="fa-trash" class="table-DeleteIcon fa-lg"></mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+                 [length]="customers.length"
+                 [pageIndex]="0"
+                 [pageSize]="50"
+                 [pageSizeOptions]="[1, 25, 50, 100, 250]">
+  </mat-paginator>
+
+</div>
+
+<ng-template #loadingOrError>
+  <mat-card class="loadingOrError">
+    <mat-error *ngIf="(loadingError$ | async) as errorMsg; else loading">
+      Error loading VAT's': {{ errorMsg }}. <br />
+      Please try again later.
+    </mat-error>
+    <ng-template #loading>
+      <div class="loading-spinner-template">
+        <mat-spinner class="loading-spinner"></mat-spinner>
+      </div>
+    </ng-template>
+  </mat-card>
+</ng-template>

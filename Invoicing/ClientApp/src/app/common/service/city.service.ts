@@ -27,7 +27,7 @@ export class CityService extends BaseService<City> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }),
@@ -43,7 +43,7 @@ export class CityService extends BaseService<City> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }
@@ -62,7 +62,7 @@ export class CityService extends BaseService<City> {
     return this.http.post<City>(`${this.serviceUrl}/city/`, payload, options)
       .pipe(
         catchError(error => {
-          this.postError$.next(error.error.message);
+          this.postError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -79,7 +79,7 @@ export class CityService extends BaseService<City> {
     return this.http.put(`${this.serviceUrl}/city/${city.id}`, payload, options)
       .pipe(
         catchError(error => {
-          this.putError$.next(error.error.message);
+          this.putError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -96,7 +96,7 @@ export class CityService extends BaseService<City> {
     return this.http.delete(`${this.serviceUrl}/city/${id}`, options)
       .pipe(
         catchError(error => {
-          this.deleteError$.next(error.error.message);
+          this.deleteError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),

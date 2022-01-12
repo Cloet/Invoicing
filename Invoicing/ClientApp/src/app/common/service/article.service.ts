@@ -23,7 +23,7 @@ export class ArticleService extends BaseService<Article> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }
@@ -40,7 +40,7 @@ export class ArticleService extends BaseService<Article> {
       .pipe(
         catchError(
           error => {
-            this.loadingError$.next(error.error.message);
+            this.loadingError$.next(this.getErrorMsg(error));
             this.handleError(error);
             return of(error);
           }
@@ -59,7 +59,7 @@ export class ArticleService extends BaseService<Article> {
     return this.http.post<Article>(`${this.serviceUrl}/article/`, payload, options)
       .pipe(
         catchError(error => {
-          this.postError$.next(error.error.message);
+          this.postError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -76,7 +76,7 @@ export class ArticleService extends BaseService<Article> {
     return this.http.put(`${this.serviceUrl}/article/${article.id}`, payload, options)
       .pipe(
         catchError(error => {
-          this.putError$.next(error.error.message);
+          this.putError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),
@@ -92,7 +92,7 @@ export class ArticleService extends BaseService<Article> {
     return this.http.delete(`${this.serviceUrl}/article/${id}`, options)
       .pipe(
         catchError(error => {
-          this.deleteError$.next(error.error.message);
+          this.deleteError$.next(this.getErrorMsg(error));
           this.handleError(error);
           return of(error);
         }),

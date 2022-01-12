@@ -22,7 +22,7 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   dataSource: MatTableDataSource<Country> = new MatTableDataSource(undefined);
-  country!: Country;
+  isLoading: boolean = true;
 
   displayedColumns : string[] = ['id', 'country', 'name', 'action'];
 
@@ -47,12 +47,14 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
   }
 
   refresh() {
+    this.isLoading = true;
     this._countryService.getCountries$().subscribe(
       response => {
+        this.isLoading = false;
         this.countries = response;
         this.dataSource = new MatTableDataSource(this.countries);
-        setTimeout(() => this.dataSource.sort = this.sort);
-        setTimeout(() => this.dataSource.paginator = this.paginator);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       }
     );
   }
@@ -63,22 +65,18 @@ export class CountryViewComponent extends BaseComponent implements OnInit {
 
   onClickDeleteCountry(row: any) {
 
-    this._countryService.getCountryForId$(row.id).subscribe(val => { this.country = val; });
+    this._countryService.getCountryForId$(row.id).subscribe(val => {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      const dialogRef = this._dialog.open(DeleteCountryDialogComponent, dialogConfig);
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    const dialogRef = this._dialog.open(DeleteCountryDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.deleteCountry();
-      }
-    });
-  }
-
-  deleteCountry() {
-    this._countryService.deleteCountry(this.country.id).subscribe(chk => {
-      this._snackbar.open("Country has been deleted.", 'ok', { duration: 2000 });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this._countryService.deleteCountry(val.id).subscribe(chk => {
+            this._snackbar.open("Country has been deleted.", 'ok', { duration: 2000 });
+          });
+        }
+      });
     });
   }
 
