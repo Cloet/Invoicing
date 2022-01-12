@@ -63,6 +63,7 @@ export class ArticleTableComponent extends BaseComponent implements OnInit {
     this._router.navigate(['/article/edit/' + row.id]);
   }
 
+ // TEST
   onClickDeleteArticle(row: Article) {
     this._articleService.getArticleForId$(row.id).subscribe(
       val => {
